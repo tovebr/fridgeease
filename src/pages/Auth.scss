@@ -1,0 +1,70 @@
+@import '../colors';
+
+.auth-page {
+  display: flex;
+  height: 80vh;
+  justify-content: center;
+  align-items: center;
+  img {
+    height: 230px;
+    margin-right: 3rem;
+  }
+}
+
+.auth {
+  display: flex;
+  flex-direction: column;
+  height: 350px;
+  justify-content: space-between;
+  &-email,
+  &-password {
+    display: flex;
+    flex-direction: column;
+    label {
+      font-size: 0.8rem;
+      padding: 0 0 0.3rem 0.3rem;
+    }
+    .reset-btn {
+      text-align: right;
+      font-size: 0.7rem;
+      padding: 0.2rem 0.2rem 0 0;
+      cursor: pointer;
+      color: #72567a;
+      font-weight: 600;
+    }
+  }
+  button {
+    margin-top: 1.3rem;
+  }
+  &-options {
+    text-align: center;
+    font-size: 0.7rem;
+    .line {
+      display: block;
+      margin-top: 1rem;
+      background-color: #fff;
+      height: 3px;
+      width: 100%;
+      border-radius: 2px;
+    }
+    .purple {
+      color: #72567a;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .auth-google {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .google-icon {
+      font-size: 1.3rem;
+      cursor: pointer;
+      margin-left: 0.3rem;
+    }
+  }
+}
+
+.small-form {
+  height: 220px;
+}

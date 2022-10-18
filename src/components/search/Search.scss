@@ -1,0 +1,52 @@
+@import '../../colors';
+
+.search {
+  position: relative;
+  width: 300px;
+  margin: auto;
+  input {
+    width: 100%;
+    padding: 0.8rem;
+    margin-top: 1rem;
+  }
+  &-resultoptions {
+    position: absolute;
+    top: 62px;
+    width: 100%;
+    padding: 0 0.8rem;
+    background-color: rgba(255, 255, 255, 0.397);
+    border-radius: 20px;
+    opacity: 0;
+    animation: 1s slide-down forwards;
+    li {
+      padding: 0.8rem 0.8rem 0.8rem 1rem;
+
+      font-size: 0.9rem;
+      border-bottom: dotted 2px rgb(121, 120, 120);
+      /* &:first-child {
+        border-radius: 20px 20px 0 0;
+      }*/
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+  &-resultoption {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: $accent-green;
+    p {
+      margin: 0;
+    }
+  }
+}
+
+@keyframes slide-down {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

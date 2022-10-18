@@ -1,0 +1,26 @@
+@import '../../colors';
+
+.product {
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.2rem 0.8rem;
+  border-radius: 50px;
+  width: 45%;
+  margin: 1rem 0;
+  height: 2.2rem;
+  p {
+    margin: 0;
+    width: 40%;
+  }
+  .actions {
+    font-size: 1.5rem;
+    display: flex;
+  }
+  .expiration {
+    padding: 0.6rem 1.1rem;
+    color: #fff;
+    font-size: 0.8rem;
+  }
+}
