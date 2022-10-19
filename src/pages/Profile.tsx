@@ -8,7 +8,6 @@ const Profile = () => {
   const logoutUser = () => {
     signOut(auth)
       .then(() => {
-        console.log('signed out');
         navigate('/login');
       })
       .catch((err) => console.log(err));

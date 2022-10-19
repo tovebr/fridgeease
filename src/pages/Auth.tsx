@@ -49,7 +49,6 @@ const Auth = () => {
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredentials) => {
           const user = userCredentials;
-          console.log(user);
           setIsLoading(false);
           handleLoginMode();
         })
@@ -61,12 +60,10 @@ const Auth = () => {
   };
 
   const logInUser = () => {
-    console.log(email, password);
     setIsLoading(true);
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredentials) => {
         const user = userCredentials;
-        console.log(user);
         setIsLoading(false);
         navigate('/');
       })
@@ -84,7 +81,6 @@ const Auth = () => {
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential?.accessToken;
         const user = result.user;
-        console.log(user);
         setIsLoading(false);
         navigate('/');
       })
