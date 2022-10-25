@@ -16,13 +16,13 @@ const Item = ({ product }: Props) => {
   return (
     <li className='product'>
       <p>{uppercasedName(product.name)}</p>{' '}
-      {product.exp < 7 && (
+      {product.expirationDays < 7 && (
         <span
           className={`expiration ${
-            product.exp > 3 ? 'light-warning' : 'warning'
+            product.expirationDays > 3 ? 'light-warning' : 'warning'
           }`}
         >
-          {product.exp} dagar kvar
+          {product.expirationDays} dagar kvar
         </span>
       )}
       <div className='actions'>

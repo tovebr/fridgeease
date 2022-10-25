@@ -5,30 +5,30 @@ import './ItemsList.scss';
 const products = [
   {
     name: 'quorn',
-    exp: 7,
-    id: 1355,
-    qty: {
-      no: 1,
+    expirationDays: 7,
+    id: ' 1355',
+    amount: {
+      qty: 1,
       unit: 'st',
     },
     category: 'vegetariskt',
   },
   {
     name: 'mjölk',
-    exp: 4,
-    id: 1655,
-    qty: {
-      no: 200,
+    expirationDays: 4,
+    id: '1655',
+    amount: {
+      qty: 200,
       unit: 'g',
     },
     category: 'mejeri',
   },
   {
     name: 'gurka',
-    id: 1295,
-    exp: 1,
-    qty: {
-      no: 1,
+    id: '1295',
+    expirationDays: 1,
+    amount: {
+      qty: 1,
       unit: 'st',
     },
     category: 'grönsaker',

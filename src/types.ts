@@ -1,9 +1,9 @@
 export interface FoodItem {
-  id: number;
+  id: string;
   name: string;
-  exp: number;
-  qty: {
-    no: number;
+  expirationDays: number;
+  amount: {
+    qty: number;
     unit: string;
   };
   category: string;
