@@ -8,7 +8,7 @@ const Filter = () => {
         <li>Mejeri</li>
         <li>Grönsaker</li>
         <li>Vegetariskt</li>
-        <li>Kött</li>
+        <li>Animailskt</li>
       </ul>
     </div>
   );

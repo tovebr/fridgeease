@@ -1,50 +1,42 @@
 import { useState, useEffect } from 'react';
 import { BsPlusLg } from 'react-icons/bs';
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import { FoodItem } from '../../types';
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  doc,
+  setDoc,
+  updateDoc,
+  getDoc,
+} from 'firebase/firestore';
+import { FoodItem, UsersFoodItem } from '../../types';
 import { db } from '../../firebase/config';
 import './Search.scss';
 import useDebounce from '../../customHooks/useDebounce';
-
-/* const result = [
-  {
-    name: 'smör',
-    id: 1255,
-    exp: 7,
-    qty: {
-      no: 1,
-      unit: 'st',
-    },
-    category: 'mejeri',
-  },
-  {
-    name: 'ost',
-    id: 1259,
-    exp: 3,
-    qty: {
-      no: 200,
-      unit: 'g',
-    },
-    category: 'mejeri',
-  },
-  {
-    name: 'filet',
-    exp: 1,
-    id: 1250,
-    qty: {
-      no: 1,
-      unit: 'st',
-    },
-    category: 'kött',
-  },
-]; */
+import Loader from '../loader/Loader';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
+import { useAppSelector } from '../../app/hooks';
 
 const Search = () => {
   const [searchResult, setSearchResult] = useState<FoodItem[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const userId = useAppSelector((state: RootState) => state.auth.userId);
+  const { fridgeId, foods } = useAppSelector(
+    (state: RootState) => state.fridge
+  );
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
+
+  const handleAddFood = async (food: FoodItem) => {
+    const docRef = doc(db, 'usersFood', fridgeId);
+    console.log(new Date());
+    const addFood: UsersFoodItem = { ...food, addedAt: new Date() };
+    await updateDoc(docRef, { fridge: [...foods, addFood] });
+    setSearchTerm('');
+  };
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -67,32 +59,46 @@ const Search = () => {
           amount: doc.data().amount,
         });
       });
-      console.log(tempResults);
+
       setSearchResult([...tempResults]);
+      setIsLoading(false);
     };
-    if (debouncedSearchTerm) fetchData();
+    if (debouncedSearchTerm) {
+      fetchData();
+    } else {
+      setSearchResult([]);
+    }
   }, [debouncedSearchTerm]);
 
   return (
-    <form className='search container'>
-      <input
-        className='search-input'
-        type='text'
-        placeholder='sök matvara...'
-        onChange={(e) => handleOnChange(e)}
-        value={searchTerm}
-      />
-      {searchResult.length > 0 && (
-        <ul className='search-resultoptions'>
-          {searchResult.map((res) => (
-            <li key={res.id} className='search-resultoption'>
-              <p>{res.name}</p>
-              <BsPlusLg id={res.id} />
-            </li>
-          ))}
-        </ul>
-      )}
-    </form>
+    <>
+      {isLoading && <Loader />}
+      <div className='container' id='search'>
+        <form className='search' onSubmit={(e) => e.preventDefault()}>
+          <input
+            className='search-input'
+            type='text'
+            placeholder='sök matvara...'
+            onChange={(e) => handleOnChange(e)}
+            value={searchTerm}
+          />
+          {searchResult.length > 0 && (
+            <ul className='search-resultoptions'>
+              {searchResult.map((res) => (
+                <li key={res.id} className='search-resultoption'>
+                  <p>{res.name}</p>
+                  <BsPlusLg
+                    id={res.id}
+                    className='icon'
+                    onClick={() => handleAddFood(res)}
+                  />
+                </li>
+              ))}
+            </ul>
+          )}
+        </form>
+      </div>
+    </>
   );
 };
 

@@ -1,52 +1,29 @@
 import Item from '../Item/Item';
 import { FoodItem } from '../../types';
 import './ItemsList.scss';
-
-const products = [
-  {
-    name: 'quorn',
-    expirationDays: 7,
-    id: ' 1355',
-    amount: {
-      qty: 1,
-      unit: 'st',
-    },
-    category: 'vegetariskt',
-  },
-  {
-    name: 'mjölk',
-    expirationDays: 4,
-    id: '1655',
-    amount: {
-      qty: 200,
-      unit: 'g',
-    },
-    category: 'mejeri',
-  },
-  {
-    name: 'gurka',
-    id: '1295',
-    expirationDays: 1,
-    amount: {
-      qty: 1,
-      unit: 'st',
-    },
-    category: 'grönsaker',
-  },
-];
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { RootState } from '../../app/store';
 
 const ItemsList = () => {
-  const listContent = () => {
-    return products.map((product: FoodItem) => {
-      return <Item key={product.id} product={product} />;
-    });
-  };
-
-  const content = listContent();
+  const { foods, fridgeId } = useAppSelector(
+    (state: RootState) => state.fridge
+  );
 
   return (
     <div className='food-list container'>
-      <ul>{content}</ul>
+      {foods.length > 0 && (
+        <ul>
+          {foods.map((prod, i) => (
+            <Item key={i} product={prod} />
+          ))}
+        </ul>
+      )}
+      {foods.length === 0 && (
+        <p>
+          Ditt kylskåp är tomt, lägg till matvaror för att se vad som behöver
+          ätas upp snart och få inspiration till matlagning!
+        </p>
+      )}
     </div>
   );
 };

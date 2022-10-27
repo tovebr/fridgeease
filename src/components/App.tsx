@@ -1,12 +1,21 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../firebase/config';
+import {
+  collection,
+  query,
+  where,
+  onSnapshot,
+  doc,
+  orderBy,
+} from 'firebase/firestore';
+import { auth, db } from '../firebase/config';
 import {
   SET_ACTIVE_USER,
   REMOVE_ACTIVE_USER,
 } from '../redux/features/authSlice';
-import { useAppDispatch } from '../app/hooks';
+import { SET_FRIDGE, EMPTY_FRIDGE } from '../redux/features/fridgeSlice';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import Fridge from '../pages/Fridge';
 import Profile from '../pages/Profile';
 import Recipes from '../pages/Recipes';
@@ -14,9 +23,12 @@ import ShoppingList from '../pages/ShoppingList';
 import Header from './header/Header';
 import Footer from './footer/Footer';
 import Auth from '../pages/Auth';
+import { RootState } from '../app/store';
+import { FoodItem, UsersFoodItem } from '../types';
 
 function App() {
   const dispatch = useAppDispatch();
+  const userId = useAppSelector((state: RootState) => state.auth.userId);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -28,6 +40,33 @@ function App() {
       }
     });
   }, []);
+
+  useEffect(() => {
+    let unsub: Function = () => {};
+
+    if (userId) {
+      const colRef = collection(db, 'usersFood');
+      const q = query(colRef, where('userId', '==', userId));
+      unsub = onSnapshot(q, (snapshot) => {
+        let tempFridge: UsersFoodItem[] = [];
+        snapshot.docs.forEach((doc) => {
+          tempFridge = doc
+            .data()
+            .fridge.sort(
+              (a: UsersFoodItem, b: UsersFoodItem) =>
+                a.expirationDays - b.expirationDays
+            ); /* .map((food: UsersFoodItem) => {
+              return { ...food, addedAt: food.addedAt.toDate() };
+            }); */
+
+          dispatch(SET_FRIDGE({ foods: tempFridge, fridgeId: doc.id }));
+        });
+      });
+    } else if (!userId) {
+      dispatch(EMPTY_FRIDGE());
+      unsub();
+    }
+  }, [userId]);
 
   return (
     <Router>
