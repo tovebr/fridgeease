@@ -1,6 +1,5 @@
-import { UsersFoodItem } from './../../types';
 import { createSlice } from '@reduxjs/toolkit';
-import { FoodItem, UsersFridge } from '../../types';
+import { FoodItem, UsersFridge, UsersFoodItem } from '../../types';
 import { Timestamp } from 'firebase/firestore';
 
 const initialState: UsersFridge = {
@@ -8,13 +7,36 @@ const initialState: UsersFridge = {
   foods: [],
 };
 
+const calcDaysLeft = (expirationDate: Date) => {
+  const now = new Date();
+  const differenceInDays =
+    Math.floor(
+      (expirationDate.getTime() - now.getTime()) / (1000 * 3600 * 24)
+    ) + 1;
+  return differenceInDays;
+};
+
 const fridgeSlice = createSlice({
   name: 'fridge',
   initialState,
   reducers: {
     SET_FRIDGE(state, action) {
-      state.foods = action.payload.foods.map((f: UsersFoodItem) => {
-        return { ...f, addedAt: f.addedAt };
+      const tempFridge = action.payload.foods.map((f: any) => {
+        return {
+          ...f,
+          addedAt: f.addedAt.toDate(),
+          expirationDate: f.expirationDate.toDate(),
+          daysLeft: calcDaysLeft(f.expirationDate.toDate()),
+        };
+      });
+      state.foods = tempFridge.sort((a: UsersFoodItem, b: UsersFoodItem) => {
+        let returnValue: number;
+        if (a.daysLeft && b.daysLeft) {
+          returnValue = a.daysLeft - b.daysLeft;
+        } else {
+          returnValue = 0;
+        }
+        return returnValue;
       });
       state.fridgeId = action.payload.fridgeId;
     },

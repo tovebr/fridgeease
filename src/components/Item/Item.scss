@@ -1,32 +1,4 @@
-@import '../../colors';
-
-.product {
-  background-color: #fff;
+.actions {
+  font-size: 1.5rem;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.2rem 0.8rem;
-  border-radius: 50px;
-  width: 45%;
-  margin: 1rem 0;
-  height: 2.2rem;
-  &-heading {
-    margin: 0;
-    width: 50%;
-
-    color: $accent-green;
-  }
-  .actions {
-    font-size: 1.5rem;
-    display: flex;
-  }
-  .expiration {
-    padding: 0.6rem 0.8rem;
-    color: #fff;
-    font-size: 0.7rem;
-    max-height: 100%;
-  }
-  .icon {
-    cursor: pointer;
-  }
 }

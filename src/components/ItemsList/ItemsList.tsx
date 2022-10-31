@@ -19,7 +19,7 @@ const ItemsList = () => {
         </ul>
       )}
       {foods.length === 0 && (
-        <p>
+        <p className='welcome-message'>
           Ditt kylskåp är tomt, lägg till matvaror för att se vad som behöver
           ätas upp snart och få inspiration till matlagning!
         </p>

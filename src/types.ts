@@ -20,6 +20,8 @@ export interface UsersFoodItem {
   };
   category: string;
   addedAt: Date;
+  expirationDate: Date;
+  daysLeft?: number;
 }
 
 export interface UsersFridge {

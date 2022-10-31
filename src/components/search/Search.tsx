@@ -9,7 +9,9 @@ import {
   setDoc,
   updateDoc,
   getDoc,
+  Timestamp,
 } from 'firebase/firestore';
+import { v4 as uuid } from 'uuid';
 import { FoodItem, UsersFoodItem } from '../../types';
 import { db } from '../../firebase/config';
 import './Search.scss';
@@ -32,8 +34,17 @@ const Search = () => {
 
   const handleAddFood = async (food: FoodItem) => {
     const docRef = doc(db, 'usersFood', fridgeId);
-    console.log(new Date());
-    const addFood: UsersFoodItem = { ...food, addedAt: new Date() };
+    const now = Timestamp.now().toDate();
+    const nowCopy = new Date(JSON.parse(JSON.stringify(now)));
+    const expirationDate = new Date(
+      nowCopy.setDate(nowCopy.getDate() + (food.expirationDays - 1))
+    );
+
+    const addFood: UsersFoodItem = {
+      ...food,
+      addedAt: now,
+      expirationDate,
+    };
     await updateDoc(docRef, { fridge: [...foods, addFood] });
     setSearchTerm('');
   };
@@ -60,14 +71,31 @@ const Search = () => {
         });
       });
 
-      setSearchResult([...tempResults]);
+      if (tempResults.length > 0) {
+        setSearchResult([...tempResults]);
+      } else {
+        setSearchResult([
+          {
+            name: debouncedSearchTerm,
+            id: uuid(),
+            expirationDays: 12,
+            category: 'övrigt',
+            amount: {
+              qty: 1,
+              unit: 'st',
+            },
+          },
+        ]);
+      }
+
       setIsLoading(false);
     };
+
     if (debouncedSearchTerm) {
       fetchData();
-    } else {
-      setSearchResult([]);
     }
+
+    if (!debouncedSearchTerm) setSearchResult([]);
   }, [debouncedSearchTerm]);
 
   return (

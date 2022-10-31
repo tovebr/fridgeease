@@ -55,9 +55,7 @@ function App() {
             .fridge.sort(
               (a: UsersFoodItem, b: UsersFoodItem) =>
                 a.expirationDays - b.expirationDays
-            ); /* .map((food: UsersFoodItem) => {
-              return { ...food, addedAt: food.addedAt.toDate() };
-            }); */
+            );
 
           dispatch(SET_FRIDGE({ foods: tempFridge, fridgeId: doc.id }));
         });

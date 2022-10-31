@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { updateDoc, doc } from 'firebase/firestore';
 import Modal from '../modal/Modal';
 import { db } from '../../firebase/config';
-import { FoodItem } from '../../types';
+import { FoodItem, UsersFoodItem } from '../../types';
 import { useAppSelector } from '../../app/hooks';
 import { RootState } from '../../app/store';
 import { MdOutlineModeEdit } from 'react-icons/md';
@@ -10,8 +10,12 @@ import { IoMdClose } from 'react-icons/io';
 import './Item.scss';
 
 interface Props {
-  product: FoodItem;
+  product: UsersFoodItem;
 }
+
+export const uppercasedName = (word: string) => {
+  return word.slice(0, 1).toUpperCase() + word.slice(1);
+};
 
 const Item = ({ product }: Props) => {
   const [showModal, setShowModal] = useState(false);
@@ -19,10 +23,6 @@ const Item = ({ product }: Props) => {
   const { fridgeId, foods } = useAppSelector(
     (state: RootState) => state.fridge
   );
-
-  const uppercasedName = (word: string) => {
-    return word.slice(0, 1).toUpperCase() + word.slice(1);
-  };
 
   const handleDelete = async () => {
     const fridgeRef = doc(db, 'usersFood', fridgeId);
@@ -41,16 +41,16 @@ const Item = ({ product }: Props) => {
 
   return (
     <>
-      {showModal && <Modal closeModal={closeModal} />}
+      {showModal && <Modal closeModal={closeModal} product={product} />}
       <li className='product' id={product.id}>
         <p className='product-heading'>{uppercasedName(product.name)}</p>{' '}
-        {product.expirationDays < 7 && (
+        {product.daysLeft && product.daysLeft < 7 && (
           <span
             className={`expiration ${
-              product.expirationDays > 3 ? 'light-warning' : 'warning'
+              product.daysLeft > 3 ? 'light-warning' : 'warning'
             }`}
           >
-            {product.expirationDays} dagar kvar
+            {product.daysLeft} dagar kvar
           </span>
         )}
         <div className='actions'>
