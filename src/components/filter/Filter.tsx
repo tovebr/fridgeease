@@ -1,15 +1,36 @@
 import './Filter.scss';
+import { uppercasedName } from '../Item/Item';
 
-const Filter = () => {
+interface Props {
+  activeFilter: string;
+  handleNewFilter: Function;
+  /* React.SetStateAction<string> | React.Dispatch<React.SetStateAction<string>> */
+}
+
+const Filter = ({ activeFilter, handleNewFilter }: Props) => {
+  const categoryOptions = [
+    'allt',
+    'mejeri',
+    'grönsaker',
+    'vegetariskt',
+    'animaliskt',
+    'övrigt',
+  ];
+
   return (
     <div className='filter'>
       <ul className='filter-options '>
-        <li className='filter-active'>Allt</li>
-        <li>Mejeri</li>
-        <li>Grönsaker</li>
-        <li>Vegetariskt</li>
-        <li>Animailskt</li>
-        <li>Övrigt</li>
+        {categoryOptions.map((category: string, i) => {
+          return (
+            <li
+              key={i}
+              className={`${category === activeFilter ? `filter-active` : ''}`}
+              onClick={() => handleNewFilter(category)}
+            >
+              {uppercasedName(category)}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

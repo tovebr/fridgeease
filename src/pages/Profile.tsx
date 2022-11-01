@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase/config';
 import { signOut } from 'firebase/auth';
+import './Profile.scss';
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ const Profile = () => {
       .catch((err) => console.log(err));
   };
   return (
-    <div className='container'>
+    <div className='container profile'>
       <h3>Min sida</h3>
       <button onClick={logoutUser}>Logga ut</button>
     </div>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { doc, updateDoc, query, where, collection } from 'firebase/firestore';
+import { doc, setDoc, query, where, collection } from 'firebase/firestore';
 import { MdOutlineModeEdit } from 'react-icons/md';
 import { IoMdClose } from 'react-icons/io';
 import { db } from '../../firebase/config';
@@ -11,17 +11,18 @@ import { useAppSelector } from '../../app/hooks';
 import { RootState } from '../../app/store';
 
 interface Props {
-  closeModal: React.MouseEventHandler;
+  closeModal: React.MouseEventHandler | any;
   product: UsersFoodItem;
 }
 
 const EditForm = ({ closeModal, product }: Props) => {
-  const { fridgeId } = useAppSelector((state: RootState) => state.fridge);
+  const { fridgeId, foods } = useAppSelector(
+    (state: RootState) => state.fridge
+  );
+  const { userId } = useAppSelector((state: RootState) => state.auth);
   const [updatedProduct, setUpdatedProduct] = useState({
     name: product.name,
-    expirationDate: new Date(product.expirationDate)
-      .toISOString()
-      .split('T')[0],
+    expirationDate: new Date(product.expirationDate),
     category: product.category,
     amount: product.amount,
   });
@@ -53,16 +54,35 @@ const EditForm = ({ closeModal, product }: Props) => {
   ) => {
     e.preventDefault();
 
-    const colRef = collection(db, 'usersFood');
+    const itemIndex = foods.findIndex((item) => item.id === product.id);
 
-    const docRef = doc(db, 'usersFood', fridgeId);
-    console.log('tja');
-    await updateDoc(docRef, {
+    const tempFoods = foods.map((food) => {
+      return {
+        name: food.name,
+        id: food.id,
+        addedAt: food.addedAt,
+        expirationDate: food.expirationDate,
+        expirationDays: food.expirationDays,
+        category: food.category,
+        amount: food.amount,
+      };
+    });
+
+    tempFoods[itemIndex] = {
+      ...tempFoods[itemIndex],
       name: updatedProduct.name,
       expirationDate: updatedProduct.expirationDate,
       category: updatedProduct.category,
       amount: updatedProduct.amount,
+    };
+
+    const docRef = doc(db, 'usersFood', fridgeId);
+
+    await setDoc(docRef, {
+      userId,
+      fridge: tempFoods,
     });
+    closeModal();
   };
 
   return (
@@ -87,11 +107,13 @@ const EditForm = ({ closeModal, product }: Props) => {
             type='date'
             id='expiration-date'
             name='expiration-date'
-            defaultValue={updatedProduct.expirationDate}
+            defaultValue={
+              updatedProduct.expirationDate.toISOString().split('T')[0]
+            }
             onChange={(e) =>
               setUpdatedProduct({
                 ...updatedProduct,
-                expirationDate: e.target.value,
+                expirationDate: new Date(e.target.value),
               })
             }
           />

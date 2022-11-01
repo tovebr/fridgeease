@@ -1,14 +1,13 @@
 import Item from '../Item/Item';
-import { FoodItem } from '../../types';
+import { UsersFoodItem } from '../../types';
 import './ItemsList.scss';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { RootState } from '../../app/store';
 
-const ItemsList = () => {
-  const { foods, fridgeId } = useAppSelector(
-    (state: RootState) => state.fridge
-  );
+interface Props {
+  foods: UsersFoodItem[];
+  activeFilter: string;
+}
 
+const ItemsList = ({ foods, activeFilter }: Props) => {
   return (
     <div className='food-list container'>
       {foods.length > 0 && (
@@ -18,7 +17,7 @@ const ItemsList = () => {
           ))}
         </ul>
       )}
-      {foods.length === 0 && (
+      {foods.length === 0 && activeFilter === 'allt' && (
         <p className='welcome-message'>
           Ditt kylskåp är tomt, lägg till matvaror för att se vad som behöver
           ätas upp snart och få inspiration till matlagning!

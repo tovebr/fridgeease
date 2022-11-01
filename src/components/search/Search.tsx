@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BsPlusLg } from 'react-icons/bs';
 import {
   collection,
@@ -6,9 +6,7 @@ import {
   query,
   where,
   doc,
-  setDoc,
   updateDoc,
-  getDoc,
   Timestamp,
 } from 'firebase/firestore';
 import { v4 as uuid } from 'uuid';
@@ -17,11 +15,14 @@ import { db } from '../../firebase/config';
 import './Search.scss';
 import useDebounce from '../../customHooks/useDebounce';
 import Loader from '../loader/Loader';
-import { useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import { useAppSelector } from '../../app/hooks';
 
-const Search = () => {
+interface Props {
+  handleNewFilter: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const Search = ({ handleNewFilter }: Props) => {
   const [searchResult, setSearchResult] = useState<FoodItem[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -33,6 +34,7 @@ const Search = () => {
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   const handleAddFood = async (food: FoodItem) => {
+    handleNewFilter('allt');
     const docRef = doc(db, 'usersFood', fridgeId);
     const now = Timestamp.now().toDate();
     const nowCopy = new Date(JSON.parse(JSON.stringify(now)));
@@ -45,7 +47,20 @@ const Search = () => {
       addedAt: now,
       expirationDate,
     };
-    await updateDoc(docRef, { fridge: [...foods, addFood] });
+
+    const tempFoods = foods.map((food) => {
+      return {
+        name: food.name,
+        id: food.id,
+        addedAt: food.addedAt,
+        expirationDate: food.expirationDate,
+        expirationDays: food.expirationDays,
+        category: food.category,
+        amount: food.amount,
+      };
+    });
+
+    await updateDoc(docRef, { fridge: [...tempFoods, addFood] });
     setSearchTerm('');
   };
 

@@ -1,7 +1,8 @@
 import React from 'react';
+import './Recipes.scss';
 
 const Recipes = () => {
-  return <div>Recept</div>;
+  return <div className='container recipes'>Recept</div>;
 };
 
 export default Recipes;

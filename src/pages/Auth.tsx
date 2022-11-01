@@ -7,7 +7,8 @@ import {
   signInWithPopup,
   sendPasswordResetEmail,
 } from 'firebase/auth';
-import { auth } from '../firebase/config';
+import { collection, addDoc } from 'firebase/firestore';
+import { auth, db } from '../firebase/config';
 import { FcGoogle } from 'react-icons/fc';
 import logo from '../assets/fridgeease-logo-freestanding.png';
 import './Auth.scss';
@@ -42,15 +43,20 @@ const Auth = () => {
     }
   };
 
-  const registerUser = () => {
-    console.log(email, password, cPassword);
+  const registerUser = async () => {
+    let userId = '';
     if (password === cPassword) {
       setIsLoading(true);
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredentials) => {
-          const user = userCredentials;
+          const { user } = userCredentials;
+          userId = user.uid;
           setIsLoading(false);
           handleLoginMode();
+        })
+        .then(() => {
+          const colRef = collection(db, 'usersFood');
+          addDoc(colRef, { userId, fridge: [] });
         })
         .catch((error) => {
           console.log(error.message);
@@ -74,15 +80,19 @@ const Auth = () => {
   };
 
   const signInWithGoogle = () => {
+    let userId = '';
     const provider = new GoogleAuthProvider();
     setIsLoading(true);
     signInWithPopup(auth, provider)
       .then((result) => {
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential?.accessToken;
         const user = result.user;
+        userId = user.uid;
         setIsLoading(false);
         navigate('/');
+      })
+      .then(() => {
+        const colRef = collection(db, 'usersFood');
+        addDoc(colRef, { userId, fridge: [] });
       })
       .catch((error) => {
         console.log(error.message);
