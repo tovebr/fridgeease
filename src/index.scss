@@ -69,6 +69,13 @@ a {
   background-color: $lightest-pink;
 }
 
+.page-heading {
+  text-align: center;
+  color: $accent-green;
+  margin-top: 4rem;
+  font-weight: 500;
+}
+
 .product {
   background-color: #fff;
   display: flex;

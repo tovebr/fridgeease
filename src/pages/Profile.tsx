@@ -15,7 +15,7 @@ const Profile = () => {
   };
   return (
     <div className='container profile'>
-      <h3>Min sida</h3>
+      <h1 className='page-heading'>Min sida</h1>
       <button onClick={logoutUser}>Logga ut</button>
     </div>
   );

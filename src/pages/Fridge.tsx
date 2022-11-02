@@ -19,6 +19,7 @@ const MyFridge = () => {
 
   return (
     <div className='main-content'>
+      <h1 className='page-heading'>Mitt Kylskåp</h1>
       <Filter activeFilter={filter} handleNewFilter={setFilter} />
       <Search handleNewFilter={setFilter} />
       <ItemsList

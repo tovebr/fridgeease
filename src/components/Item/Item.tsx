@@ -44,7 +44,7 @@ const Item = ({ product }: Props) => {
       {showModal && <Modal closeModal={closeModal} product={product} />}
       <li className='product' id={product.id}>
         <p className='product-heading'>{uppercasedName(product.name)}</p>{' '}
-        {product.daysLeft && product.daysLeft < 7 && (
+        {product.daysLeft !== undefined && product.daysLeft < 7 && (
           <span
             className={`expiration ${
               product.daysLeft > 3 ? 'light-warning' : 'warning'

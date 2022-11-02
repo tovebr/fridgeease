@@ -25,6 +25,9 @@ import Footer from './footer/Footer';
 import Auth from '../pages/Auth';
 import { RootState } from '../app/store';
 import { FoodItem, UsersFoodItem } from '../types';
+/* import * as dotenv from 'dotenv';
+
+dotenv.config(); */
 
 function App() {
   const dispatch = useAppDispatch();
