@@ -2,6 +2,7 @@
   "name": "fridgeease",
   "version": "0.1.0",
   "private": true,
+  "proxy": "https://handla.api.ica.se/api",
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.6",
     "@testing-library/jest-dom": "^5.16.5",
@@ -11,6 +12,7 @@
     "@types/node": "^16.11.66",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
+    "axios": "^1.1.3",
     "dotenv": "^16.0.3",
     "firebase": "^9.12.1",
     "react": "^18.2.0",

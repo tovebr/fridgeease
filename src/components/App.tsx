@@ -23,6 +23,7 @@ import ShoppingList from '../pages/ShoppingList';
 import Header from './header/Header';
 import Footer from './footer/Footer';
 import Auth from '../pages/Auth';
+import Recipe from '../pages/Recipe';
 import { RootState } from '../app/store';
 import { FoodItem, UsersFoodItem } from '../types';
 /* import * as dotenv from 'dotenv';
@@ -77,6 +78,7 @@ function App() {
         <Route path='/profile' element={<Profile />} />
         <Route path='/login' element={<Auth />} />
         <Route path='/recipes' element={<Recipes />} />
+        <Route path='/recipes/:id' element={<Recipe />} />
         <Route path='/shoppinglist' element={<ShoppingList />} />
       </Routes>
       <Footer />

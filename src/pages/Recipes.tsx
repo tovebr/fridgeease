@@ -1,109 +1,21 @@
 import { useState, useEffect } from 'react';
-import { MdFoodBank } from 'react-icons/md';
+import { Link } from 'react-router-dom';
 import { useAppSelector } from '../app/hooks';
 import { RootState } from '../app/store';
 import { uppercasedName } from '../components/Item/Item';
 import './Recipes.scss';
-
-const recipe = {
-  Id: 725249,
-  ImageId: 240079,
-  ImageUrl:
-    'https://assets.icanet.se/t_ICAseAbsoluteUrl//imagevaultfiles/id_240079/cf_259/stekt_lax_med_potatis_och_romsas.jpg',
-  Title: 'Stekt lax med potatis och romsås',
-  PreambleHTML:
-    'Ibland är klassikerna det man längtar efter mest. Hur låter mild kokt potatis och perfekt stekt lax ihop med gräddfil som fått smak av små salta caviarkorn? Till detta finhackad sallad för extra krisp. Enkelt, gott och snabbt, och du får mer tid över att umgås med familj, eller hinna i god tid till favoritprogrammet!',
-  Difficulty: 'Medel',
-  CookingTime: 'Under 30 minuter',
-  CookingTimeAbbreviated: '< 30 min',
-  CookingTimeMinutes: 30,
-  CommentCount: 1,
-  AverageRating: '3.9',
-  IngredientCount: 8,
-  OfferCount: 0,
-  IsGoodClimateChoice: false,
-  IsKeyHole: false,
-  NumberOfUserRatings: '15',
-  IngredientGroups: [
-    {
-      Portions: 4,
-      Ingredients: [
-        {
-          Text: '900 g potatis',
-          IngredientId: 11296,
-          Quantity: 900.0,
-          MinQuantity: 0.0,
-          QuantityFraction: '900',
-          Unit: 'g',
-          Ingredient: 'potatis',
-        },
-        {
-          Text: '1 1/2 dl gräddfil',
-          IngredientId: 10565,
-          Quantity: 1.5,
-          MinQuantity: 0.0,
-          QuantityFraction: '1 1/2',
-          Unit: 'dl',
-          Ingredient: 'gräddfil',
-        },
-        {
-          Text: '75 g röd caviarmix',
-          IngredientId: 697009,
-          Quantity: 75.0,
-          MinQuantity: 0.0,
-          QuantityFraction: '75',
-          Unit: 'g',
-          Ingredient: 'röd caviarmix',
-        },
-        {
-          Text: 'salt',
-          IngredientId: 11462,
-          Quantity: 0.0,
-          MinQuantity: 0.0,
-          QuantityFraction: '',
-          Ingredient: 'salt',
-        },
-        {
-          Text: 'peppar',
-          IngredientId: 11224,
-          Quantity: 0.0,
-          MinQuantity: 0.0,
-          QuantityFraction: '',
-          Ingredient: 'peppar',
-        },
-        {
-          Text: '4 port laxfilé (à 125 g)',
-          IngredientId: 10945,
-          Quantity: 4.0,
-          MinQuantity: 0.0,
-          QuantityFraction: '4',
-          Ingredient: 'port laxfilé (à 125 g)',
-        },
-        {
-          Text: '1/2 msk olja',
-          IngredientId: 11161,
-          Quantity: 0.5,
-          MinQuantity: 0.0,
-          QuantityFraction: '1/2',
-          Unit: 'msk',
-          Ingredient: 'olja',
-        },
-        {
-          Text: '1 gurka',
-          IngredientId: 10596,
-          Quantity: 1.0,
-          MinQuantity: 0.0,
-          QuantityFraction: '1',
-          Ingredient: 'gurka',
-        },
-      ],
-    },
-  ],
-};
+import { recipe } from './recipeEx';
+import { Recipe } from '../types';
+import RecipeCard from '../components/recipeCard/RecipeCard';
+import axios from 'axios';
 
 const Recipes = () => {
   const [searchFor, setSearchFor] = useState<string[]>([]);
+  const [hasIngredients, setHasIngredients] = useState<object[]>([]);
+  const [needsIngredients, setNeedsIngredients] = useState<object[]>([]);
+  const [searchResult, setSearchResult] = useState<any[]>([]);
   const { foods } = useAppSelector((state: RootState) => state.fridge);
+  //searchwithFilters?recordsPerPage=10&pageNumber=1&phrase=quorn&sorting=0
 
   const handleSearchClick = (name: string) => {
     if (searchFor.includes(name)) {
@@ -131,16 +43,49 @@ const Recipes = () => {
     setSearchFor([foods[0]?.name, foods[1]?.name, foods[2]?.name]);
   }, [foods]);
 
+  useEffect(() => {
+    // sök
+    const recipesSearch = async () => {
+      if (typeof process.env.REACT_APP_ICA_BASE_URL === 'string') {
+        const searchWords =
+          searchFor.join('+').at(-1) === '+'
+            ? searchFor.join('+').slice(0, -1)
+            : searchFor.join('+');
+
+        const result = await axios.get('/recipes/searchwithFilters', {
+          headers: {
+            AuthenticationTicket: process.env.REACT_APP_ICA_AUTH_TICKET,
+          },
+          params: {
+            phrase: searchWords,
+            recordsPerPage: 10,
+            pageNumber: 1,
+            sorting: 0,
+          },
+        });
+        setSearchResult([...result.data.Recipes]);
+      }
+    };
+
+    recipesSearch();
+  }, [searchFor]);
+  console.log([searchResult]);
+
   return (
     <div className='container recipes'>
       <h1 className='page-heading'>Recept</h1>
       <ul className='search-filter'>{searchMenu}</ul>
       <div className='recipes-container'>
-        <div className='recipe'>
-          <div className='img-container'>
-            <img src={recipe.ImageUrl} alt={recipe.Title} />
-          </div>
-        </div>
+        {searchResult.length > 0 &&
+          searchResult.map((recipe) => (
+            <RecipeCard key={recipe.id} recipe={recipe} />
+          ))}
+        {searchResult.length === 0 && (
+          <p>
+            Inga recept att visa. Lägg till matvaror i ditt kylskåp för att
+            kunna söka recept!
+          </p>
+        )}
       </div>
     </div>
   );
