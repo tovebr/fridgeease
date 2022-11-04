@@ -12,6 +12,7 @@
       background-color: #fff;
       padding: 0.5rem 0.8rem;
       font-size: 0.9rem;
+      height: 1rem;
       border-radius: 30px;
       margin: 0.3rem;
       cursor: pointer;
@@ -26,5 +27,14 @@
     flex-wrap: wrap;
     justify-content: space-between;
     margin: 1rem auto;
+    p {
+      margin: 3rem auto;
+    }
+    .error-message {
+      margin: auto;
+      p {
+        margin: 1rem auto;
+      }
+    }
   }
 }

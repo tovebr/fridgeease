@@ -1,0 +1,14 @@
+.unauthorized {
+  min-height: 84.5vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  p {
+    max-width: 300px;
+    text-align: center;
+    a {
+      color: rgb(126, 23, 86);
+      text-decoration: underline;
+    }
+  }
+}

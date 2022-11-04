@@ -1,52 +1,57 @@
-import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { NavLink, useLocation, useParams } from 'react-router-dom';
 import { useAppSelector } from '../../app/hooks';
 import './Nav.scss';
 
 const Nav = () => {
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
-  const [activeTab, setActiveTab] = useState(
-    `${isLoggedIn ? 'fridge' : 'login'}`
-  );
+  const [activeTab, setActiveTab] = useState('');
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    setActiveTab(pathname === '/' ? 'fridge' : pathname.substring(1));
+  }, [pathname]);
 
   return (
     <div className='main-nav'>
       <ul>
         {isLoggedIn && (
           <>
-            <li
-              className={`${'fridge' === activeTab ? 'active-link' : ''}`}
-              onClick={() => setActiveTab('fridge')}
-            >
-              <NavLink to='/'>Mitt Kylskåp</NavLink>
-            </li>
-            <li
-              className={`${'recipes' === activeTab ? 'active-link' : ''}`}
-              onClick={() => setActiveTab('recipes')}
-            >
-              <NavLink to='/recipes'>Recept</NavLink>
-            </li>
-            <li
-              className={`${'shoppinglist' === activeTab ? 'active-link' : ''}`}
-              onClick={() => setActiveTab('shoppinglist')}
-            >
-              <NavLink to='/shoppinglist'>Inköpslista</NavLink>
-            </li>
-            <li
-              className={`${'profile' === activeTab ? 'active-link' : ''}`}
-              onClick={() => setActiveTab('profile')}
-            >
-              <NavLink to='/profile'>Min Sida</NavLink>
-            </li>
+            <NavLink to='/'>
+              <li
+                className={`${'fridge' === activeTab ? 'active-link' : ''}`}
+                onClick={() => setActiveTab('fridge')}
+              >
+                Mitt Kylskåp
+              </li>
+            </NavLink>
+            <NavLink to='/recipes'>
+              <li
+                className={`${'recipes' === activeTab ? 'active-link' : ''}`}
+                onClick={() => setActiveTab('recipes')}
+              >
+                Recept
+              </li>
+            </NavLink>
+            <NavLink to='/shoppinglist'>
+              <li
+                className={`${
+                  'shoppinglist' === activeTab ? 'active-link' : ''
+                }`}
+                onClick={() => setActiveTab('shoppinglist')}
+              >
+                Inköpslista
+              </li>
+            </NavLink>
+            <NavLink to='/profile'>
+              <li
+                className={`${'profile' === activeTab ? 'active-link' : ''}`}
+                onClick={() => setActiveTab('profile')}
+              >
+                Min Sida
+              </li>
+            </NavLink>
           </>
-        )}
-        {!isLoggedIn && (
-          <li
-            className={`${'login' === activeTab ? 'active-link' : ''}`}
-            onClick={() => setActiveTab('login')}
-          >
-            <NavLink to='/login'>Login</NavLink>
-          </li>
         )}
       </ul>
     </div>

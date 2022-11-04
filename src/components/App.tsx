@@ -26,13 +26,16 @@ import Auth from '../pages/Auth';
 import Recipe from '../pages/Recipe';
 import { RootState } from '../app/store';
 import { FoodItem, UsersFoodItem } from '../types';
+import Unauthorized from '../pages/Unauthorized';
 /* import * as dotenv from 'dotenv';
 
 dotenv.config(); */
 
 function App() {
   const dispatch = useAppDispatch();
-  const userId = useAppSelector((state: RootState) => state.auth.userId);
+  const { userId, isLoggedIn } = useAppSelector(
+    (state: RootState) => state.auth
+  );
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -73,14 +76,21 @@ function App() {
   return (
     <Router>
       <Header />
-      <Routes>
-        <Route path='/' element={<Fridge />} />
-        <Route path='/profile' element={<Profile />} />
-        <Route path='/login' element={<Auth />} />
-        <Route path='/recipes' element={<Recipes />} />
-        <Route path='/recipes/:id' element={<Recipe />} />
-        <Route path='/shoppinglist' element={<ShoppingList />} />
-      </Routes>
+      {!isLoggedIn && (
+        <Routes>
+          <Route path='/' element={<Auth />} />
+          <Route path='/*' element={<Unauthorized />} />
+        </Routes>
+      )}
+      {isLoggedIn && (
+        <Routes>
+          <Route path='/' element={<Fridge />} />
+          <Route path='/profile' element={<Profile />} />
+          <Route path='/recipes' element={<Recipes />} />
+          <Route path='/recipes/:id' element={<Recipe />} />
+          <Route path='/shoppinglist' element={<ShoppingList />} />
+        </Routes>
+      )}
       <Footer />
     </Router>
   );

@@ -1,22 +1,18 @@
-import { Link } from 'react-router-dom';
+import React from 'react';
+import './FullRecipe.scss';
 import { AiOutlineClockCircle } from 'react-icons/ai';
 import { FiUsers } from 'react-icons/fi';
-import './RecipeCard.scss';
+import '../recipeCard/RecipeCard.scss';
 
-const RecipeCard = ({ recipe }: any) => {
-  const formatHeading = (text: string) => {
-    return text.length > 40 ? text.substring(0, 40) + '...' : text;
-  };
-
+const FullRecipe = ({ recipe }: any) => {
   return (
-    <Link to={`/recipes/${recipe.Id}`}>
-      <div id={recipe.Id} className='recipe'>
-        <div className='img-container'>
-          <img src={recipe.ImageUrl} alt={recipe.Title} />
-        </div>
-        <div className='heading-container'>
-          <h6>{formatHeading(recipe.Title)}</h6>
-        </div>
+    <div className='full-recipe-container'>
+      <div className='img-container'>
+        <img src={recipe.ImageUrl} alt={recipe.Title} />
+      </div>
+      <div className='description'>
+        <h2>{recipe.Title}</h2>
+        <p className='desc-text'>{recipe.PreambleHTML}</p>
         <div className='recipe-summary'>
           <div className='rating'>
             <p>Betyg</p>
@@ -51,8 +47,8 @@ const RecipeCard = ({ recipe }: any) => {
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 
-export default RecipeCard;
+export default FullRecipe;
