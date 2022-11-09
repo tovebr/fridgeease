@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { doc, setDoc, query, where, collection } from 'firebase/firestore';
+import { doc, updateDoc } from 'firebase/firestore';
 import { MdOutlineModeEdit } from 'react-icons/md';
 import { IoMdClose } from 'react-icons/io';
 import { db } from '../../firebase/config';
@@ -9,14 +9,17 @@ import './Modal.scss';
 import { uppercasedName } from '../Item/Item';
 import { useAppSelector } from '../../app/hooks';
 import { RootState } from '../../app/store';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   closeModal: React.MouseEventHandler | any;
   product: UsersFoodItem;
+  productSource: string;
 }
 
-const EditForm = ({ closeModal, product }: Props) => {
-  const { fridgeId, foods } = useAppSelector(
+const EditForm = ({ closeModal, product, productSource }: Props) => {
+  const navigate = useNavigate();
+  const { fridgeId, foods, shoppingList } = useAppSelector(
     (state: RootState) => state.fridge
   );
   const { userId } = useAppSelector((state: RootState) => state.auth);
@@ -35,7 +38,7 @@ const EditForm = ({ closeModal, product }: Props) => {
     'övrigt',
   ];
 
-  const unitOptions = ['g', 'st'];
+  const unitOptions = ['g', 'kg', 'st', 'msk', 'dl', 'l'];
 
   const selectOptions = (options: Array<string>, upperCase: boolean) => {
     return options.map((opt, i) => {
@@ -47,16 +50,12 @@ const EditForm = ({ closeModal, product }: Props) => {
     });
   };
 
-  const updateItem = async (
-    e:
-      | React.FormEvent<HTMLFormElement>
-      | React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    e.preventDefault();
+  const updateItem = (foodArray: UsersFoodItem[]): UsersFoodItem[] => {
+    const itemIndex = foodArray.findIndex(
+      (item: any) => item.id === product.id
+    );
 
-    const itemIndex = foods.findIndex((item) => item.id === product.id);
-
-    const tempFoods = foods.map((food) => {
+    const tempFoods = foodArray.map((food: any) => {
       return {
         name: food.name,
         id: food.id,
@@ -67,7 +66,6 @@ const EditForm = ({ closeModal, product }: Props) => {
         amount: food.amount,
       };
     });
-
     tempFoods[itemIndex] = {
       ...tempFoods[itemIndex],
       name: updatedProduct.name,
@@ -75,20 +73,48 @@ const EditForm = ({ closeModal, product }: Props) => {
       category: updatedProduct.category,
       amount: updatedProduct.amount,
     };
+    return tempFoods;
+  };
+
+  const updateDB = async (
+    e:
+      | React.FormEvent<HTMLFormElement>
+      | React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    let tempFoods: UsersFoodItem[];
+    if (productSource === 'foods') {
+      tempFoods = updateItem(foods);
+    } else {
+      tempFoods = updateItem(shoppingList);
+    }
 
     const docRef = doc(db, 'usersFood', fridgeId);
-
-    await setDoc(docRef, {
-      userId,
-      fridge: tempFoods,
-    });
+    try {
+      await updateDoc(docRef, {
+        [productSource === 'foods' ? 'fridge' : productSource]: tempFoods,
+      });
+    } catch (error: any) {
+      console.log(error.message);
+    }
     closeModal();
+    /* navigate(-1); */
   };
 
   return (
-    <form className='edit' onSubmit={(e) => updateItem(e)}>
+    <form className='edit' onSubmit={(e) => updateDB(e)}>
       <div className='product'>
-        <p className='product-heading'>{uppercasedName(product.name)}</p>{' '}
+        <input
+          className='product-name'
+          type='text'
+          value={updatedProduct.name}
+          onChange={(e) =>
+            setUpdatedProduct({
+              ...updatedProduct,
+              name: e.target.value,
+            })
+          }
+        />{' '}
         {product.daysLeft && product.daysLeft < 7 && (
           <span
             className={`expiration ${
@@ -165,7 +191,7 @@ const EditForm = ({ closeModal, product }: Props) => {
             </select>
           </div>
         </div>
-        <button type='submit' onClick={(e) => updateItem(e)}>
+        <button type='submit' onClick={(e) => updateDB(e)}>
           Spara
         </button>
       </div>
@@ -173,11 +199,15 @@ const EditForm = ({ closeModal, product }: Props) => {
   );
 };
 
-const Modal = ({ closeModal, product }: Props) => {
+const Modal = ({ closeModal, product, productSource }: Props) => {
   return ReactDOM.createPortal(
     <>
       <div className='wrapper' onClick={closeModal}></div>
-      <EditForm closeModal={closeModal} product={product} />
+      <EditForm
+        closeModal={closeModal}
+        product={product}
+        productSource={productSource}
+      />
     </>,
     document.getElementById('modal') as HTMLElement
   );

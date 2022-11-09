@@ -11,24 +11,31 @@ import './Item.scss';
 
 interface Props {
   product: UsersFoodItem;
+  productSource: any;
 }
 
 export const uppercasedName = (word: string) => {
   return word.slice(0, 1).toUpperCase() + word.slice(1);
 };
 
-const Item = ({ product }: Props) => {
+const Item = ({ product, productSource }: Props) => {
   const [showModal, setShowModal] = useState(false);
 
-  const { fridgeId, foods } = useAppSelector(
+  const { fridgeId, foods, shoppingList } = useAppSelector(
     (state: RootState) => state.fridge
   );
 
   const handleDelete = async () => {
     const fridgeRef = doc(db, 'usersFood', fridgeId);
-    await updateDoc(fridgeRef, {
-      fridge: foods.filter((food) => food.id !== product.id),
-    });
+    try {
+      await updateDoc(fridgeRef, {
+        [productSource === 'foods' ? 'fridge' : productSource]: [
+          ...(productSource === 'foods' ? foods : shoppingList),
+        ].filter((food: any) => food.id !== product.id),
+      });
+    } catch (error: any) {
+      console.log(error.message);
+    }
   };
 
   const closeModal = () => {
@@ -41,7 +48,13 @@ const Item = ({ product }: Props) => {
 
   return (
     <>
-      {showModal && <Modal closeModal={closeModal} product={product} />}
+      {showModal && (
+        <Modal
+          closeModal={closeModal}
+          product={product}
+          productSource={productSource}
+        />
+      )}
       <li className='product' id={product.id}>
         <p className='product-heading'>{uppercasedName(product.name)}</p>{' '}
         {product.daysLeft !== undefined && product.daysLeft < 7 && (

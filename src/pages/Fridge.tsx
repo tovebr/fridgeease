@@ -25,6 +25,7 @@ const MyFridge = () => {
       <ItemsList
         activeFilter={filter}
         foods={filter === 'allt' ? foods : filteredFood}
+        productSource='foods'
       />
     </div>
   );

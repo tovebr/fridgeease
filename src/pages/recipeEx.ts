@@ -22,6 +22,67 @@ export const recipe = {
       Portions: 4,
       Ingredients: [
         {
+          Text: 'ca 1 kg laxfilé',
+          IngredientId: 10945,
+          Quantity: 1,
+          MinQuantity: 0,
+          QuantityFraction: '1',
+        },
+
+        {
+          Text: 'salt',
+          IngredientId: 11462,
+          Quantity: 0,
+          MinQuantity: 0,
+          QuantityFraction: '',
+        },
+        {
+          Text: 'peppar',
+          IngredientId: 11224,
+          Quantity: 0,
+          MinQuantity: 0,
+          QuantityFraction: '',
+        },
+        {
+          Text: '1 kruka dill',
+          IngredientId: 10381,
+          Quantity: 1,
+          MinQuantity: 0,
+          QuantityFraction: '1',
+        },
+      ],
+    },
+    {
+      Portions: 4,
+      GroupName: 'Romsås',
+      Ingredients: [
+        {
+          Text: '2 dl crème fraiche',
+          IngredientId: 10361,
+          Quantity: 2,
+          MinQuantity: 0,
+          QuantityFraction: '2',
+        },
+        {
+          Text: '50 g löjrom eller ishavsrom',
+          IngredientId: 10696,
+          Quantity: 50,
+          MinQuantity: 0,
+          QuantityFraction: '50',
+        },
+        {
+          Text: '1 tsk färskpressad citronjuice',
+          IngredientId: 10327,
+          Quantity: 1,
+          MinQuantity: 0,
+          QuantityFraction: '1',
+        },
+      ],
+    },
+    {
+      Portions: 4,
+      Ingredients: [
+        {
           Text: '900 g potatis',
           IngredientId: 11296,
           Quantity: 900.0,

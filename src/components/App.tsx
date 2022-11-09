@@ -27,9 +27,6 @@ import Recipe from '../pages/Recipe';
 import { RootState } from '../app/store';
 import { FoodItem, UsersFoodItem } from '../types';
 import Unauthorized from '../pages/Unauthorized';
-/* import * as dotenv from 'dotenv';
-
-dotenv.config(); */
 
 function App() {
   const dispatch = useAppDispatch();
@@ -63,8 +60,14 @@ function App() {
               (a: UsersFoodItem, b: UsersFoodItem) =>
                 a.expirationDays - b.expirationDays
             );
-
-          dispatch(SET_FRIDGE({ foods: tempFridge, fridgeId: doc.id }));
+          dispatch(
+            SET_FRIDGE({
+              foods: tempFridge,
+              fridgeId: doc.id,
+              savedRecipes: doc.data().savedRecipes,
+              shoppingList: doc.data().shoppingList,
+            })
+          );
         });
       });
     } else if (!userId) {

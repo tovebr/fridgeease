@@ -56,7 +56,7 @@ const Auth = () => {
         })
         .then(() => {
           const colRef = collection(db, 'usersFood');
-          addDoc(colRef, { userId, fridge: [] });
+          addDoc(colRef, { userId, fridge: [], savedRecipes: [] });
         })
         .catch((error) => {
           console.log(error.message);

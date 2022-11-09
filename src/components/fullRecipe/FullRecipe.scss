@@ -31,13 +31,47 @@
   .recipe-summary {
     background-color: #fff;
     height: 20%;
+    width: 70%;
     padding: 0;
     flex-wrap: wrap;
     flex-direction: row;
+    justify-content: space-between;
 
     & > * {
       width: 40%;
       height: 1.5rem;
+    }
+  }
+  .ingredients {
+    padding: 1rem;
+    background-color: $background-lighter;
+    margin-top: 1rem;
+    border-radius: 10px;
+    width: 100%;
+    font-size: 0.9rem;
+    ul {
+      .group-heading {
+        font-weight: 600;
+        margin: 1.5rem 0 0.5rem 0;
+      }
+      li {
+        padding: 0.2rem;
+        display: flex;
+        align-items: center;
+        svg {
+          padding-right: 0.5rem;
+        }
+        .check {
+          color: $accent-green;
+        }
+        .plus {
+          height: 0.7rem;
+          width: 0.7rem;
+        }
+      }
+      .faded {
+        color: #31572c96;
+      }
     }
   }
 }

@@ -1,9 +1,23 @@
-import React from 'react';
+import { useEffect } from 'react';
 import ItemsList from '../components/ItemsList/ItemsList';
 import './ShoppingList.scss';
+import { useAppSelector } from '../app/hooks';
+import { RootState } from '../app/store';
 
 const ShoppingList = () => {
-  return <div className='container shoppinglist'>{/* <ItemsList /> */}</div>;
+  const { shoppingList } = useAppSelector((state: RootState) => state.fridge);
+
+  return (
+    <div className='container shoppinglist'>
+      {shoppingList.length > 0 && (
+        <ItemsList
+          foods={shoppingList}
+          activeFilter='allt'
+          productSource='shoppingList'
+        />
+      )}
+    </div>
+  );
 };
 
 export default ShoppingList;

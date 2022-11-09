@@ -21,6 +21,25 @@
       outline: 3px solid $accent-green;
     }
   }
+  &-options {
+    background-color: $background-darker;
+    display: flex;
+    justify-content: space-evenly;
+    width: 700px;
+    margin: 4rem auto 2rem auto;
+    border-radius: 10px;
+    height: 4rem;
+    .option {
+      cursor: pointer;
+
+      padding: 0.5rem 1rem;
+      border-radius: 10px 10px 0 0;
+      height: 2rem;
+    }
+    .active {
+      background-color: $background-color;
+    }
+  }
   &-container {
     width: 700px;
     display: flex;

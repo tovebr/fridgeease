@@ -27,6 +27,8 @@ export interface UsersFoodItem {
 export interface UsersFridge {
   fridgeId: string;
   foods: UsersFoodItem[];
+  savedRecipes: any[];
+  shoppingList: UsersFoodItem[];
 }
 
 export interface IngredientsObject {
@@ -61,4 +63,11 @@ export interface Recipe {
   IsKeyHole: boolean;
   NumberOfUserRatings: string;
   IngredientGroups: IngredientGroup[];
+}
+
+export interface Params {
+  phrase: string;
+  recordsPerPage: string;
+  pageNumber: string;
+  sorting: string;
 }

@@ -5,15 +5,16 @@ import './ItemsList.scss';
 interface Props {
   foods: UsersFoodItem[];
   activeFilter: string;
+  productSource: string;
 }
 
-const ItemsList = ({ foods, activeFilter }: Props) => {
+const ItemsList = ({ foods, activeFilter, productSource }: Props) => {
   return (
     <div className='food-list container'>
       {foods.length > 0 && (
         <ul>
           {foods.map((prod, i) => (
-            <Item key={i} product={prod} />
+            <Item key={i} product={prod} productSource={productSource} />
           ))}
         </ul>
       )}
