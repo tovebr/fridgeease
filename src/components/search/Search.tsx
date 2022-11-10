@@ -26,6 +26,7 @@ const Search = ({ handleNewFilter }: Props) => {
   const [searchResult, setSearchResult] = useState<FoodItem[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
   const userId = useAppSelector((state: RootState) => state.auth.userId);
   const { fridgeId, foods } = useAppSelector(
     (state: RootState) => state.fridge
@@ -59,9 +60,12 @@ const Search = ({ handleNewFilter }: Props) => {
         amount: food.amount,
       };
     });
-
-    await updateDoc(docRef, { fridge: [...tempFoods, addFood] });
-    setSearchTerm('');
+    try {
+      await updateDoc(docRef, { fridge: [...tempFoods, addFood] });
+      setSearchTerm('');
+    } catch (error: any) {
+      setError(error.message);
+    }
   };
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -140,6 +144,7 @@ const Search = ({ handleNewFilter }: Props) => {
             </ul>
           )}
         </form>
+        {error && <p className='error-message'>Något gick fel....</p>}
       </div>
     </>
   );

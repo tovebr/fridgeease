@@ -6,6 +6,7 @@ import { FoodItem, UsersFoodItem } from '../../types';
 import { useAppSelector } from '../../app/hooks';
 import { RootState } from '../../app/store';
 import { MdOutlineModeEdit } from 'react-icons/md';
+import { BsCheckLg } from 'react-icons/bs';
 import { IoMdClose } from 'react-icons/io';
 import './Item.scss';
 
@@ -20,13 +21,25 @@ export const uppercasedName = (word: string) => {
 
 const Item = ({ product, productSource }: Props) => {
   const [showModal, setShowModal] = useState(false);
-
   const { fridgeId, foods, shoppingList } = useAppSelector(
     (state: RootState) => state.fridge
   );
+  const fridgeRef = doc(db, 'usersFood', fridgeId);
+
+  const handleAddToFridge = async () => {
+    try {
+      await updateDoc(fridgeRef, {
+        fridge: [...foods, product],
+        shoppingList: [
+          ...shoppingList.filter((food) => food.id !== product.id),
+        ],
+      });
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  };
 
   const handleDelete = async () => {
-    const fridgeRef = doc(db, 'usersFood', fridgeId);
     try {
       await updateDoc(fridgeRef, {
         [productSource === 'foods' ? 'fridge' : productSource]: [
@@ -67,7 +80,9 @@ const Item = ({ product, productSource }: Props) => {
           </span>
         )}
         <div className='actions'>
-          {' '}
+          {productSource === 'shoppingList' && (
+            <BsCheckLg className='icon check' onClick={handleAddToFridge} />
+          )}{' '}
           <MdOutlineModeEdit className='icon' onClick={openModal} />{' '}
           <IoMdClose className='icon' onClick={handleDelete} />
         </div>

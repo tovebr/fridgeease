@@ -15,7 +15,19 @@
   display: flex;
   flex-direction: column;
   height: 350px;
+  width: 220px;
   justify-content: space-between;
+  position: relative;
+  margin-right: 2rem;
+  .error-message {
+    color: rgb(185, 4, 4);
+    font-size: 0.85rem;
+    position: absolute;
+    width: 90%;
+    bottom: 20%;
+    left: 5%;
+    text-align: center;
+  }
   &-email,
   &-password {
     display: flex;
@@ -32,6 +44,11 @@
       color: #72567a;
       font-weight: 600;
     }
+  }
+  .message {
+    color: $accent-green;
+    font-size: 0.85rem;
+    text-align: center;
   }
   button {
     margin-top: 1.3rem;
@@ -67,4 +84,11 @@
 
 .small-form {
   height: 220px;
+}
+.big-form {
+  height: 400px;
+  .error-message {
+    bottom: 15%;
+    left: 8%;
+  }
 }

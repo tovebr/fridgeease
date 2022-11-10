@@ -1,4 +1,6 @@
-header {
+@import '../../colors';
+nav {
+  background-color: $background-darker;
   .container {
     display: flex;
     align-items: center;
@@ -6,5 +8,19 @@ header {
   }
   .nav-logo {
     height: 50px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    .container {
+      width: 100%;
+      & > a {
+        display: none;
+      }
+    }
   }
 }

@@ -5,6 +5,7 @@ import ItemsList from '../components/ItemsList/ItemsList';
 import { useAppSelector } from '../app/hooks';
 import { RootState } from '../app/store';
 import { UsersFoodItem } from '../types';
+import logo from '../assets/fridgeease-logo-freestanding.png';
 
 const MyFridge = () => {
   const { foods } = useAppSelector((state: RootState) => state.fridge);
@@ -19,6 +20,7 @@ const MyFridge = () => {
 
   return (
     <div className='main-content'>
+      <img className='logo' src={logo} alt='logo' />
       <h1 className='page-heading'>Mitt Kylskåp</h1>
       <Filter activeFilter={filter} handleNewFilter={setFilter} />
       <Search handleNewFilter={setFilter} />

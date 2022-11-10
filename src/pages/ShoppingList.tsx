@@ -9,12 +9,14 @@ const ShoppingList = () => {
 
   return (
     <div className='container shoppinglist'>
-      {shoppingList.length > 0 && (
+      {shoppingList.length > 0 ? (
         <ItemsList
           foods={shoppingList}
           activeFilter='allt'
           productSource='shoppingList'
         />
+      ) : (
+        <p className='message'>Din inköpslista är tom</p>
       )}
     </div>
   );

@@ -10,3 +10,10 @@
     margin: auto;
   }
 }
+
+@media screen and (max-width: 450px) {
+  .food-list {
+    width: 100%;
+    margin: 0;
+  }
+}

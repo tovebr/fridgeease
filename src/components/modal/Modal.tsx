@@ -38,7 +38,7 @@ const EditForm = ({ closeModal, product, productSource }: Props) => {
     'övrigt',
   ];
 
-  const unitOptions = ['g', 'kg', 'st', 'msk', 'dl', 'l'];
+  const unitOptions = ['g', 'kg', 'st', 'tsk', 'kryddmått', 'msk', 'dl', 'l'];
 
   const selectOptions = (options: Array<string>, upperCase: boolean) => {
     return options.map((opt, i) => {

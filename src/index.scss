@@ -93,9 +93,13 @@ a {
     color: $accent-green;
   }
   .actions {
-    margin-right: 0.6rem;
-    svg:first-child {
+    //margin-right: 0.6rem;
+    /* svg:first-child {
       margin-right: 0.2rem;
+    } */
+    .check {
+      color: #528d4a;
+      margin-right: 0.6rem;
     }
   }
   .expiration {
@@ -106,5 +110,32 @@ a {
   }
   .icon {
     cursor: pointer;
+  }
+}
+
+.logo {
+  display: none;
+}
+
+@media screen and (max-width: 450px) {
+  .main-content {
+    min-height: 100vh;
+  }
+  .container {
+    width: 100%;
+  }
+  .product {
+    width: 85%;
+    margin: 0.8rem auto;
+  }
+  .page-heading {
+    font-size: 1.5rem;
+    margin-top: 1rem;
+  }
+  .logo {
+    display: block;
+    height: 75px;
+    width: 130px;
+    margin: 2rem auto;
   }
 }

@@ -1,5 +1,11 @@
 import { useEffect, useState } from 'react';
-import { NavLink, useLocation, useParams } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { BiFridge } from 'react-icons/bi';
+import { CiForkAndKnife } from 'react-icons/ci';
+import { BsCart2 } from 'react-icons/bs';
+import { FiUser } from 'react-icons/fi';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../firebase/config';
 import { useAppSelector } from '../../app/hooks';
 import './Nav.scss';
 
@@ -7,6 +13,16 @@ const Nav = () => {
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
   const [activeTab, setActiveTab] = useState('');
   const { pathname } = useLocation();
+
+  const navigate = useNavigate();
+
+  const logoutUser = () => {
+    signOut(auth)
+      .then(() => {
+        navigate('/');
+      })
+      .catch((err) => console.log(err));
+  };
 
   useEffect(() => {
     setActiveTab(pathname === '/' ? 'fridge' : pathname.substring(1));
@@ -22,6 +38,7 @@ const Nav = () => {
                 className={`${'fridge' === activeTab ? 'active-link' : ''}`}
                 onClick={() => setActiveTab('fridge')}
               >
+                <BiFridge />
                 Mitt Kylskåp
               </li>
             </NavLink>
@@ -30,6 +47,7 @@ const Nav = () => {
                 className={`${'recipes' === activeTab ? 'active-link' : ''}`}
                 onClick={() => setActiveTab('recipes')}
               >
+                <CiForkAndKnife />
                 Recept
               </li>
             </NavLink>
@@ -40,17 +58,18 @@ const Nav = () => {
                 }`}
                 onClick={() => setActiveTab('shoppinglist')}
               >
+                <BsCart2 />
                 Inköpslista
               </li>
             </NavLink>
-            <NavLink to='/profile'>
-              <li
-                className={`${'profile' === activeTab ? 'active-link' : ''}`}
-                onClick={() => setActiveTab('profile')}
-              >
-                Min Sida
-              </li>
-            </NavLink>
+
+            <li
+              className={`${'profile' === activeTab ? 'active-link' : ''}`}
+              onClick={logoutUser}
+            >
+              <FiUser />
+              Logga ut
+            </li>
           </>
         )}
       </ul>

@@ -7,9 +7,33 @@
     flex-direction: row;
     li {
       padding: 1.2rem;
+      color: $accent-green;
+      cursor: pointer;
+      svg {
+        display: none;
+      }
     }
   }
   .active-link {
     background-color: $background-color;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .main-nav {
+    ul {
+      width: 100%;
+
+      li {
+        font-size: 0.7rem;
+
+        svg {
+          display: block;
+          margin: auto;
+          font-size: 1.2rem;
+          /* stroke-width: 1; */
+        }
+      }
+    }
   }
 }

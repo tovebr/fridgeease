@@ -17,7 +17,6 @@ import {
 import { SET_FRIDGE, EMPTY_FRIDGE } from '../redux/features/fridgeSlice';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import Fridge from '../pages/Fridge';
-import Profile from '../pages/Profile';
 import Recipes from '../pages/Recipes';
 import ShoppingList from '../pages/ShoppingList';
 import Header from './header/Header';
@@ -88,7 +87,6 @@ function App() {
       {isLoggedIn && (
         <Routes>
           <Route path='/' element={<Fridge />} />
-          <Route path='/profile' element={<Profile />} />
           <Route path='/recipes' element={<Recipes />} />
           <Route path='/recipes/:id' element={<Recipe />} />
           <Route path='/shoppinglist' element={<ShoppingList />} />

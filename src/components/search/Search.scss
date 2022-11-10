@@ -59,3 +59,18 @@
     top: 62px;
   }
 }
+
+@media screen and (max-width: 450px) {
+  .search {
+    width: 100%;
+    height: 5rem;
+    &-resultoptions {
+      width: 66%;
+      left: 3.1rem;
+    }
+    input {
+      width: 60%;
+      margin: 1rem 3.1rem 0 3.1rem;
+    }
+  }
+}

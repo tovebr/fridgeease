@@ -23,7 +23,7 @@ const Recipes = () => {
   const [recipeMode, setRecipeMode] = useState('search');
   const [params, setParams] = useState<Params>({
     phrase: '',
-    recordsPerPage: '10',
+    recordsPerPage: '9',
     pageNumber: '1',
     sorting: '0',
   });
@@ -93,7 +93,7 @@ const Recipes = () => {
     });
 
     dispatch(SET_CURRENT_SEARCH_INDEX(prevSearchIndex));
-    //searchRecipes(prevSearchIndex, 'search');
+
     return prevSearchIndex;
   };
 
@@ -115,6 +115,7 @@ const Recipes = () => {
             },
             params: tempParams,
           });
+          console.log(result.data);
           setRecipes([...result.data.Recipes]);
           dispatch(
             SET_SEARCH({

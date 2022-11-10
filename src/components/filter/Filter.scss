@@ -19,3 +19,15 @@
     border-bottom: solid 3px $accent-pink !important;
   }
 }
+
+@media screen and (max-width: 450px) {
+  .filter {
+    overflow: scroll;
+
+    &-options {
+      width: 500px;
+      margin-bottom: 0.4rem;
+      margin-top: 1rem;
+    }
+  }
+}

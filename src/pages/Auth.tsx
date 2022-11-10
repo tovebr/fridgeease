@@ -20,20 +20,26 @@ const Auth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [cPassword, setCPassword] = useState('');
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
+
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
   const handleLoginMode = () => {
     setLoginMode(!loginMode);
-
+    setMessage('');
     setEmail('');
+    setError('');
     setPassword('');
     setCPassword('');
+    console.log(message);
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError('');
     if (loginMode && !resetMode) {
       logInUser();
     } else if (!loginMode && !resetMode) {
@@ -46,6 +52,7 @@ const Auth = () => {
   const registerUser = async () => {
     let userId = '';
     if (password === cPassword) {
+      let errorText = '';
       setIsLoading(true);
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredentials) => {
@@ -56,12 +63,36 @@ const Auth = () => {
         })
         .then(() => {
           const colRef = collection(db, 'usersFood');
-          addDoc(colRef, { userId, fridge: [], savedRecipes: [] });
+          addDoc(colRef, {
+            userId,
+            fridge: [],
+            savedRecipes: [],
+            shoppingList: [],
+          });
         })
         .catch((error) => {
           console.log(error.message);
+          //setError(error.message);
+
+          switch (error.message) {
+            case 'Firebase: Error (auth/invalid-email).':
+              errorText = 'Ogiltig Email, försök igen';
+              break;
+            case 'Firebase: Password should be at least 6 characters (auth/weak-password).':
+              errorText = 'Lösenordet måste vara minst 6 tecken';
+              break;
+            case 'Firebase: Error (auth/email-already-in-use).':
+              errorText = 'Mailadressen är redan registrerad, logga in';
+              break;
+            default:
+              errorText = 'Något gick fel, försök igen';
+          }
+
           setIsLoading(false);
+          setError(errorText);
         });
+    } else {
+      setError('Lösenorden är inte identiska');
     }
   };
 
@@ -75,6 +106,19 @@ const Auth = () => {
       })
       .catch((error) => {
         console.log(error.message);
+        let errorText = '';
+        switch (error.message) {
+          case 'Firebase: Error (auth/wrong-password).':
+            errorText = 'Fel lösenord, försök igen';
+            break;
+          case 'Firebase: Error (auth/user-not-found).':
+            errorText = 'Fel email, försök igen';
+            break;
+          default:
+            errorText = 'Något gick fel, försök igen';
+        }
+
+        setError(errorText);
         setIsLoading(false);
       });
   };
@@ -96,21 +140,27 @@ const Auth = () => {
       })
       .catch((error) => {
         console.log(error.message);
+        setError(error.message);
         setIsLoading(false);
       });
   };
 
-  const resetPassword = () => {
+  const showResetPasswordForm = () => {
+    setError('');
     setResetMode(true);
+    setPassword('');
+  };
+  const resetPassword = () => {
     if (email.length > 5) {
       sendPasswordResetEmail(auth, email)
         .then(() => {
-          console.log('reset email has been sent');
-          setResetMode(false);
-          setLoginMode(true);
+          setMessage(
+            'Vi har skickat ett mail med instruktioner för attåterställa ditt lösenord (kolla i skräpmappen om du inte ser det i inkorgen)'
+          );
         })
         .catch((err) => {
           console.log(err.message);
+          setError(err.message);
         });
     }
   };
@@ -121,9 +171,12 @@ const Auth = () => {
       <div className='auth-page'>
         <img src={logo} alt='logo' />
         <form
-          className={`auth ${resetMode ? 'small-form' : ''}`}
+          className={`auth ${resetMode && 'small-form'} ${
+            !loginMode && !resetMode && 'big-form'
+          }`}
           onSubmit={(e) => handleSubmit(e)}
         >
+          {error && <p className='error-message'>{error}</p>}
           <div className='auth-email'>
             <label htmlFor='email'>Email</label>
             <input
@@ -145,7 +198,7 @@ const Auth = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
               {loginMode && (
-                <span className='reset-btn' onClick={resetPassword}>
+                <span className='reset-btn' onClick={showResetPasswordForm}>
                   Glömt lösenordet?
                 </span>
               )}
@@ -168,7 +221,12 @@ const Auth = () => {
           {!loginMode && !resetMode && (
             <button type='submit'>Registrera</button>
           )}
-          {resetMode && <button type='submit'>Återställ lösenord</button>}
+          {resetMode && (
+            <button type='submit' onClick={resetPassword}>
+              Återställ lösenord
+            </button>
+          )}
+          {message && resetMode && <p className='message'>{message}</p>}
           <div className='auth-options'>
             <span className='line'></span>
             <p className='auth-google'>

@@ -5,14 +5,14 @@ import './Header.scss';
 
 const Header = () => {
   return (
-    <header>
+    <nav>
       <div className='container'>
         <NavLink to='/'>
           <img className='nav-logo' src={logo} alt='logo' />
         </NavLink>
         <Nav />
       </div>
-    </header>
+    </nav>
   );
 };
 

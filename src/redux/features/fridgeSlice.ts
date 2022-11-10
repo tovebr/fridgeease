@@ -34,19 +34,27 @@ const fridgeSlice = createSlice({
   initialState,
   reducers: {
     SET_FRIDGE(state, action) {
-      const tempFridge = createFoodItems(action.payload.foods);
-      state.foods = tempFridge.sort((a: UsersFoodItem, b: UsersFoodItem) => {
-        let returnValue: number;
-        if (a.daysLeft && b.daysLeft) {
-          returnValue = a.daysLeft - b.daysLeft;
-        } else {
-          returnValue = 0;
-        }
-        return returnValue;
-      });
+      if (action.payload.foods.length > 0) {
+        const tempFridge = createFoodItems(action.payload.foods);
+        state.foods = tempFridge.sort((a: UsersFoodItem, b: UsersFoodItem) => {
+          let returnValue: number;
+          if (a.daysLeft && b.daysLeft) {
+            returnValue = a.daysLeft - b.daysLeft;
+          } else {
+            returnValue = 0;
+          }
+          return returnValue;
+        });
+      } else {
+        state.foods = action.payload.foods;
+      }
       state.fridgeId = action.payload.fridgeId;
       state.savedRecipes = action.payload.savedRecipes;
-      state.shoppingList = createFoodItems(action.payload.shoppingList);
+      if (action.payload.shoppingList.length > 0) {
+        state.shoppingList = createFoodItems(action.payload.shoppingList);
+      } else {
+        state.shoppingList = action.payload.shoppingList;
+      }
     },
     EMPTY_FRIDGE(state) {
       state.foods = [];
