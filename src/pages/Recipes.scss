@@ -55,4 +55,30 @@
       }
     }
   }
+  &-pages {
+    width: 200px;
+    margin: auto;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .logo {
+    margin-bottom: 1rem;
+  }
+  .recipes {
+    min-height: 110vh;
+    &-options {
+      width: 100%;
+
+      margin-top: 0;
+      margin-bottom: 0.7rem;
+      border-radius: 0;
+    }
+    &-container {
+      width: 100%;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      overflow: scroll;
+    }
+  }
 }

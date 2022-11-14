@@ -38,7 +38,7 @@ const Nav = () => {
                 className={`${'fridge' === activeTab ? 'active-link' : ''}`}
                 onClick={() => setActiveTab('fridge')}
               >
-                <BiFridge />
+                <BiFridge className='fridge-icon' />
                 Mitt Kylskåp
               </li>
             </NavLink>
@@ -47,7 +47,7 @@ const Nav = () => {
                 className={`${'recipes' === activeTab ? 'active-link' : ''}`}
                 onClick={() => setActiveTab('recipes')}
               >
-                <CiForkAndKnife />
+                <CiForkAndKnife className='cutlery-icon' />
                 Recept
               </li>
             </NavLink>
@@ -58,7 +58,7 @@ const Nav = () => {
                 }`}
                 onClick={() => setActiveTab('shoppinglist')}
               >
-                <BsCart2 />
+                <BsCart2 className='cart-icon' />
                 Inköpslista
               </li>
             </NavLink>
@@ -67,7 +67,7 @@ const Nav = () => {
               className={`${'profile' === activeTab ? 'active-link' : ''}`}
               onClick={logoutUser}
             >
-              <FiUser />
+              <FiUser className='user-icon' />
               Logga ut
             </li>
           </>

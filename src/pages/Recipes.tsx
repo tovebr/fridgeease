@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+
 import { useAppSelector } from '../app/hooks';
 import { useAppDispatch } from '../app/hooks';
 import { RootState } from '../app/store';
 import { uppercasedName } from '../components/Item/Item';
 import './Recipes.scss';
-import { recipe } from './recipeEx';
 import { Recipe, Params } from '../types';
 import RecipeCard from '../components/recipeCard/RecipeCard';
 import Loader from '../components/loader/Loader';
@@ -15,7 +14,8 @@ import {
   SET_CURRENT_SEARCH_INDEX,
 } from '../redux/features/recipesSlice';
 import axios from 'axios';
-
+import ResultPages from '../components/resultPages/ResultPages';
+import logo from '../assets/fridgeease-logo-freestanding.png';
 const Recipes = () => {
   const [searchFor, setSearchFor] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -29,6 +29,9 @@ const Recipes = () => {
   });
   const [searchParams, setSearchParams] = useSearchParams();
   const [phrase, setPhrase] = useState(searchParams.get('phrase'));
+  const [pageNumber, setPageNumber] = useState(searchParams.get('pageNumber'));
+  const [numberOfPages, setNumberOfPages] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   /* searchParams.forEach((value, key) =>
     console.log('key:', key, '///', 'value: ', value)
@@ -44,9 +47,9 @@ const Recipes = () => {
   const dispatch = useAppDispatch();
 
   const searchWordsAsParam = (): string => {
-    return searchFor.join('%2B').at(-1) === '%2B'
-      ? searchFor.join('%2B').slice(0, -1)
-      : searchFor.join('%2B');
+    return searchFor.join(' ').at(-1) === ' '
+      ? searchFor.join(' ').slice(0, -1)
+      : searchFor.join(' ');
   };
 
   const handleSearchClick = (name: string) => {
@@ -87,8 +90,10 @@ const Recipes = () => {
             ? false
             : item.searchTerms.includes(word) &&
               searchFor.length ===
-                [...searches[i].searchTerms.split('%2B')].length;
+                [...searches[i].searchTerms.split(' ')].length &&
+              item.page === currentPage;
       });
+
       if (prev) return (prevSearchIndex = i);
     });
 
@@ -102,7 +107,14 @@ const Recipes = () => {
       const prevSearchIndex = prevSearch();
       setIsLoading(true);
       const searchWords = searchWordsAsParam();
-      const tempParams: Params = { ...params, phrase: searchWords };
+      const tempParams: Params = {
+        ...params,
+        phrase: searchWords,
+        pageNumber: String(currentPage),
+      };
+
+      console.log(currentPage);
+
       setSearchParams({ ...tempParams });
       if (prevSearchIndex !== -1) {
         setRecipes([...searches[prevSearchIndex].result]);
@@ -115,11 +127,13 @@ const Recipes = () => {
             },
             params: tempParams,
           });
-          console.log(result.data);
+          setNumberOfPages(result.data.NumberOfPages);
+          console.log(numberOfPages, result.data.NumberOfPages);
           setRecipes([...result.data.Recipes]);
           dispatch(
             SET_SEARCH({
               result: [...result.data.Recipes],
+              page: currentPage,
               searchTerms: searchWords,
             })
           );
@@ -128,6 +142,7 @@ const Recipes = () => {
         } catch (error: any) {
           setError(error.message);
           setIsLoading(false);
+          setCurrentPage(0);
         }
       }
     } else {
@@ -140,25 +155,39 @@ const Recipes = () => {
     searchRecipes(mode);
   };
 
+  const handlePageClick = (type: string) => {
+    if (type === 'next' && numberOfPages > currentPage) {
+      setCurrentPage(currentPage + 1);
+      //setSearchParams({ ...params, pageNumber: String(currentPage + 1) });
+    } else if (type === 'prev' && currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+      //setSearchParams({ ...params, pageNumber: String(currentPage - 1) });
+      console.log(currentPage - 1);
+    }
+    searchRecipes('search');
+  };
+
   useEffect(() => {
     if (phrase) {
-      setSearchFor([...phrase.split('%2B')]);
+      setSearchFor([...phrase.split(' ')]);
     } else {
       setSearchFor([foods[0]?.name, foods[1]?.name, foods[2]?.name]);
     }
   }, []);
 
   useEffect(() => {
-    const checkPrevSearches = async () => {
+    const search = async () => {
       await searchRecipes('search');
     };
-    checkPrevSearches();
+    search();
   }, [searchFor]);
 
   return (
     <>
       {isLoading && <Loader />}
       <div className='container recipes'>
+        <img className='logo' src={logo} alt='logo' />
+
         <div className='recipes-options'>
           <p
             id='search'
@@ -202,6 +231,14 @@ const Recipes = () => {
             </div>
           )}
         </div>
+
+        {numberOfPages > 1 && (
+          <ResultPages
+            numberOfPages={numberOfPages}
+            currentPage={currentPage}
+            handlePageClick={handlePageClick}
+          />
+        )}
       </div>
     </>
   );
