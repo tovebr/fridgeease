@@ -1,18 +1,22 @@
 @import '../../colors';
 
 #search {
-  height: 5rem;
+  height: 4rem;
 }
 .search {
   position: relative;
   width: 300px;
+  //height: 100px;
   margin: auto;
+
   input {
     position: absolute;
     width: 93%;
     padding: 0.8rem 1.5rem;
     margin-top: 1rem;
     z-index: 3;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
   &-resultoptions {
     position: absolute;
@@ -22,7 +26,8 @@
     padding: 0 0.8rem;
     background-color: rgb(197, 219, 255);
     border-radius: 20px;
-
+    left: 50%;
+    transform: translate(-50%, -50%);
     animation: 0.3s slide-down forwards;
     li {
       padding: 0.8rem 0.8rem 0.8rem 1rem;
@@ -66,11 +71,12 @@
     height: 5rem;
     &-resultoptions {
       width: 66%;
-      left: 3.1rem;
+      margin: 0.8rem auto 0 auto;
     }
     input {
       width: 60%;
-      margin: 1rem 3.1rem 0 3.1rem;
+      margin: 1rem auto 0 auto;
+      top: 1rem;
     }
   }
 }

@@ -33,7 +33,7 @@ const Nav = () => {
       <ul>
         {isLoggedIn && (
           <>
-            <NavLink to='/'>
+            <NavLink className='list-item' to='/'>
               <li
                 className={`${'fridge' === activeTab ? 'active-link' : ''}`}
                 onClick={() => setActiveTab('fridge')}
@@ -42,7 +42,7 @@ const Nav = () => {
                 Mitt Kylskåp
               </li>
             </NavLink>
-            <NavLink to='/recipes'>
+            <NavLink className='list-item' to='/recipes/search'>
               <li
                 className={`${'recipes' === activeTab ? 'active-link' : ''}`}
                 onClick={() => setActiveTab('recipes')}
@@ -51,7 +51,7 @@ const Nav = () => {
                 Recept
               </li>
             </NavLink>
-            <NavLink to='/shoppinglist'>
+            <NavLink className='list-item' to='/shoppinglist'>
               <li
                 className={`${
                   'shoppinglist' === activeTab ? 'active-link' : ''
@@ -64,7 +64,9 @@ const Nav = () => {
             </NavLink>
 
             <li
-              className={`${'profile' === activeTab ? 'active-link' : ''}`}
+              className={`list-item ${
+                'profile' === activeTab ? 'active-link' : ''
+              }`}
               onClick={logoutUser}
             >
               <FiUser className='user-icon' />

@@ -6,7 +6,7 @@
     display: flex;
     flex-direction: row;
     li {
-      padding: 0.8rem 1.2rem;
+      padding: 1.1rem 1.2rem;
       color: $accent-green;
       cursor: pointer;
       svg {
@@ -21,8 +21,10 @@
 
 @media screen and (max-width: 450px) {
   .main-nav {
+    width: 100%;
     ul {
       width: 100%;
+      justify-content: space-between;
 
       li {
         font-size: 0.7rem;
@@ -31,7 +33,6 @@
           display: block;
           margin: auto;
           font-size: 1.6rem;
-          /* stroke-width: 1; */
         }
         .cutlery-icon {
           stroke-width: 1;

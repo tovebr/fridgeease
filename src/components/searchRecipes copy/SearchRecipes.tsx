@@ -1,25 +1,29 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 
-import { useAppSelector } from '../app/hooks';
-import { useAppDispatch } from '../app/hooks';
-import { RootState } from '../app/store';
-import { uppercasedName } from '../components/Item/Item';
+import { useAppSelector, useAppDispatch } from '../../app/hooks';
+import { RootState } from '../../app/store';
+import { uppercasedName } from '../../components/Item/Item';
 import './Recipes.scss';
-import { Recipe, Params } from '../types';
-import RecipeCard from '../components/recipeCard/RecipeCard';
-import Loader from '../components/loader/Loader';
-import SearchRecipes from '../components/searchRecipes copy/SearchRecipes';
+import { Recipe, Params } from '../../types';
+import RecipeCard from '../../components/recipeCard/RecipeCard';
+import Loader from '../../components/loader/Loader';
 import {
   SET_SEARCH,
   SET_CURRENT_SEARCH_INDEX,
-} from '../redux/features/recipesSlice';
+} from '../../redux/features/recipesSlice';
 import axios from 'axios';
-import ResultPages from '../components/resultPages/ResultPages';
+import ResultPages from '../../components/resultPages/ResultPages';
 import logo from '../assets/fridgeease-logo-freestanding.png';
-const Recipes = () => {
+
+interface Props {
+  isLoading: boolean;
+  setIsLoading: Function;
+}
+
+const SearchRecipes = ({ isLoading, setIsLoading }: Props) => {
   const [searchFor, setSearchFor] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  //const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [recipeMode, setRecipeMode] = useState('search');
   const [params, setParams] = useState<Params>({
@@ -107,7 +111,7 @@ const Recipes = () => {
   };
 
   const searchRecipes = async (mode: string, page = 0) => {
-    if (searchFor.length > 0 && mode === 'search') {
+    if (searchFor.length > 0) {
       setIsLoading(true);
       const searchWords = searchWordsAsParam();
       const tempParams: Params = {
@@ -154,9 +158,6 @@ const Recipes = () => {
           setCurrentPage(1);
         }
       }
-    } else {
-      setRecipes(savedRecipes);
-      setNumberOfPages(Math.ceil(savedRecipes.length / recipesPerPage));
     }
   };
 
@@ -258,4 +259,4 @@ const Recipes = () => {
   );
 };
 
-export default Recipes;
+export default SearchRecipes;

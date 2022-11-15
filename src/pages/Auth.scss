@@ -2,7 +2,7 @@
 
 .auth-page {
   display: flex;
-  height: 84.5vh;
+  height: 84.8vh;
   justify-content: center;
   align-items: center;
   img {
@@ -90,5 +90,19 @@
   .error-message {
     bottom: 15%;
     left: 8%;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .auth-page {
+    flex-direction: column;
+    height: 100vh;
+    img {
+      height: 80px;
+      margin: 0 0 2rem 0;
+    }
+    .auth {
+      margin: 0;
+    }
   }
 }

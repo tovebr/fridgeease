@@ -55,7 +55,7 @@ a {
 }
 
 .main-content {
-  min-height: 77vh;
+  min-height: 77.3vh;
 }
 
 .warning {
@@ -125,8 +125,11 @@ a {
     width: 100%;
   }
   .product {
-    width: 85%;
+    width: 80%;
     margin: 0.8rem auto;
+    &-heading {
+      width: 45%;
+    }
   }
   .page-heading {
     font-size: 1.5rem;

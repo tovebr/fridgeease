@@ -79,12 +79,11 @@
 
 @media screen and (max-width: 450px) {
   .full-recipe {
-    min-height: 152vh;
     padding: 0;
     &-container {
       width: 85vw;
 
-      margin: auto;
+      margin: 0 auto 5.5rem auto;
       padding: 1rem;
       .img-container {
         width: 100%;
