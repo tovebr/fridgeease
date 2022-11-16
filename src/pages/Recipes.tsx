@@ -9,7 +9,6 @@ import './Recipes.scss';
 import { Recipe, Params } from '../types';
 import RecipeCard from '../components/recipeCard/RecipeCard';
 import Loader from '../components/loader/Loader';
-import SearchRecipes from '../components/searchRecipes copy/SearchRecipes';
 import {
   SET_SEARCH,
   SET_CURRENT_SEARCH_INDEX,
@@ -201,22 +200,19 @@ const Recipes = () => {
         <img className='logo' src={logo} alt='logo' />
 
         <div className='recipes-options'>
-          <Link to='/recipes/search'>
-            <p
-              className={`option ${recipeMode === 'search' ? 'active' : ''}`}
-              onClick={() => handleRecipeMode('search')}
-            >
-              Sök recept
-            </p>
-          </Link>
-          <Link to='/recipes/saved'>
-            <p
-              className={`option ${recipeMode === 'saved' ? 'active' : ''}`}
-              onClick={() => handleRecipeMode('saved')}
-            >
-              Sparade recept
-            </p>
-          </Link>
+          <p
+            className={`option ${recipeMode === 'search' ? 'active' : ''}`}
+            onClick={() => handleRecipeMode('search')}
+          >
+            Sök recept
+          </p>
+
+          <p
+            className={`option ${recipeMode === 'saved' ? 'active' : ''}`}
+            onClick={() => handleRecipeMode('saved')}
+          >
+            Sparade recept
+          </p>
         </div>
         {recipeMode === 'search' && (
           <ul className='search-filter'>{searchMenu}</ul>

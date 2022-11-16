@@ -42,7 +42,7 @@ const Nav = () => {
                 Mitt Kylskåp
               </li>
             </NavLink>
-            <NavLink className='list-item' to='/recipes/search'>
+            <NavLink className='list-item' to='/recipes'>
               <li
                 className={`${'recipes' === activeTab ? 'active-link' : ''}`}
                 onClick={() => setActiveTab('recipes')}

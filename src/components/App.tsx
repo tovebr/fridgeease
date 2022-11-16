@@ -87,11 +87,8 @@ function App() {
       {isLoggedIn && (
         <Routes>
           <Route path='/' element={<Fridge />} />
-          <Route path='recipes' element={<Recipes />}>
-            <Route path='search' element={<Recipes />} />
-            <Route path='saved' element={<Recipes />} />
-          </Route>
-          <Route path='recipes/:id' element={<Recipe />} />
+          <Route path='/recipes' element={<Recipes />} />
+          <Route path='/recipes/:id' element={<Recipe />} />
           <Route path='/shoppinglist' element={<ShoppingList />} />
         </Routes>
       )}
