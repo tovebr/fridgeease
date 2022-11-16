@@ -34,11 +34,14 @@ const FullRecipe = ({ recipe }: any) => {
       nowCopy.setDate(nowCopy.getDate() + (newItem.expirationDays - 1))
     );
 
-    const addFood: UsersFoodItem = {
+    const addFood: FoodItem = {
+      ...newItem,
+    };
+    /* const addFood: UsersFoodItem = {
       ...newItem,
       addedAt: now,
       expirationDate,
-    };
+    }; */
 
     await updateDoc(docRef, { shoppingList: [...shoppingList, addFood] });
   };

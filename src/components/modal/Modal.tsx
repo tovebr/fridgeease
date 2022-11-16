@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { doc, updateDoc } from 'firebase/firestore';
 import { MdOutlineModeEdit } from 'react-icons/md';
 import { IoMdClose } from 'react-icons/io';
 import { db } from '../../firebase/config';
-import { UsersFoodItem } from '../../types';
+import { UsersFoodItem, FoodItem } from '../../types';
 import './Modal.scss';
 import { uppercasedName } from '../Item/Item';
 import { useAppSelector } from '../../app/hooks';
@@ -23,11 +23,18 @@ const EditForm = ({ closeModal, product, productSource }: Props) => {
     (state: RootState) => state.fridge
   );
   const { userId } = useAppSelector((state: RootState) => state.auth);
-  const [updatedProduct, setUpdatedProduct] = useState({
+  const [updatedProduct, setUpdatedProduct] = useState<{
+    name: string;
+    expirationDate: Date | undefined;
+    amount: { qty: number; unit: string };
+    category: string;
+  }>({
     name: product.name,
-    expirationDate: new Date(product.expirationDate),
-    category: product.category,
+    expirationDate: product.expirationDate
+      ? new Date(product.expirationDate)
+      : undefined,
     amount: product.amount,
+    category: product.category,
   });
 
   const categoryOptions = [
@@ -50,29 +57,52 @@ const EditForm = ({ closeModal, product, productSource }: Props) => {
     });
   };
 
-  const updateItem = (foodArray: UsersFoodItem[]): UsersFoodItem[] => {
+  const updateItem = (
+    foodArray: UsersFoodItem[] | FoodItem[]
+  ): UsersFoodItem[] | FoodItem[] => {
     const itemIndex = foodArray.findIndex(
       (item: any) => item.id === product.id
     );
 
-    const tempFoods = foodArray.map((food: any) => {
-      return {
-        name: food.name,
-        id: food.id,
-        addedAt: food.addedAt,
-        expirationDate: food.expirationDate,
-        expirationDays: food.expirationDays,
-        category: food.category,
-        amount: food.amount,
+    let tempFoods: UsersFoodItem[] | FoodItem[] = [];
+
+    if (productSource === 'shoppingList') {
+      tempFoods = foodArray.map((food: any) => {
+        return {
+          name: food.name,
+          id: food.id,
+          expirationDays: food.expirationDays,
+          category: food.category,
+          amount: food.amount,
+        };
+      });
+      tempFoods[itemIndex] = {
+        ...tempFoods[itemIndex],
+        name: updatedProduct.name,
+        category: updatedProduct.category,
+        amount: updatedProduct.amount,
       };
-    });
-    tempFoods[itemIndex] = {
-      ...tempFoods[itemIndex],
-      name: updatedProduct.name,
-      expirationDate: updatedProduct.expirationDate,
-      category: updatedProduct.category,
-      amount: updatedProduct.amount,
-    };
+    } else {
+      tempFoods = foodArray.map((food: any) => {
+        return {
+          name: food.name,
+          id: food.id,
+          addedAt: food.addedAt,
+          expirationDate: food.expirationDate,
+          expirationDays: food.expirationDays,
+          category: food.category,
+          amount: food.amount,
+        };
+      });
+
+      tempFoods[itemIndex] = {
+        ...tempFoods[itemIndex],
+        name: updatedProduct.name,
+        expirationDate: updatedProduct.expirationDate,
+        category: updatedProduct.category,
+        amount: updatedProduct.amount,
+      };
+    }
     return tempFoods;
   };
 
@@ -82,7 +112,7 @@ const EditForm = ({ closeModal, product, productSource }: Props) => {
       | React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    let tempFoods: UsersFoodItem[];
+    let tempFoods: UsersFoodItem[] | FoodItem[];
     if (productSource === 'foods') {
       tempFoods = updateItem(foods);
     } else {
@@ -115,34 +145,39 @@ const EditForm = ({ closeModal, product, productSource }: Props) => {
             })
           }
         />{' '}
-        {product.daysLeft && product.daysLeft < 7 && (
-          <span
-            className={`expiration ${
-              product.daysLeft > 3 ? 'light-warning' : 'warning'
-            }`}
-          >
-            {product.daysLeft} dagar kvar
-          </span>
-        )}
+        {(product.daysLeft || product.daysLeft === 0) &&
+          product.daysLeft < 7 && (
+            <span
+              className={`expiration ${
+                product.daysLeft > 3 ? 'light-warning' : 'warning'
+              }`}
+            >
+              {product.daysLeft} dagar kvar
+            </span>
+          )}
         <IoMdClose className='icon' onClick={closeModal} />
       </div>
       <div className='input-div'>
         <div className='input-div-group'>
-          <label htmlFor='expiration-date'>Bäst före</label>
-          <input
-            type='date'
-            id='expiration-date'
-            name='expiration-date'
-            defaultValue={
-              updatedProduct.expirationDate.toISOString().split('T')[0]
-            }
-            onChange={(e) =>
-              setUpdatedProduct({
-                ...updatedProduct,
-                expirationDate: new Date(e.target.value),
-              })
-            }
-          />
+          {updatedProduct.expirationDate && (
+            <>
+              <label htmlFor='expiration-date'>Bäst före</label>
+              <input
+                type='date'
+                id='expiration-date'
+                name='expiration-date'
+                defaultValue={
+                  updatedProduct.expirationDate.toISOString().split('T')[0]
+                }
+                onChange={(e) =>
+                  setUpdatedProduct({
+                    ...updatedProduct,
+                    expirationDate: new Date(e.target.value),
+                  })
+                }
+              />{' '}
+            </>
+          )}
         </div>
         <div className='input-div-group'>
           <label htmlFor='category'>Kategori</label>

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { updateDoc, doc } from 'firebase/firestore';
+import { updateDoc, doc, Timestamp } from 'firebase/firestore';
 import Modal from '../modal/Modal';
 import { db } from '../../firebase/config';
 import { FoodItem, UsersFoodItem } from '../../types';
@@ -27,9 +27,21 @@ const Item = ({ product, productSource }: Props) => {
   const fridgeRef = doc(db, 'usersFood', fridgeId);
 
   const handleAddToFridge = async () => {
+    const now = Timestamp.now().toDate();
+    const nowCopy = new Date(JSON.parse(JSON.stringify(now)));
+    const expirationDate = new Date(
+      nowCopy.setDate(nowCopy.getDate() + (product.expirationDays - 1))
+    );
+
+    const addFood: UsersFoodItem = {
+      ...product,
+      addedAt: now,
+      expirationDate,
+    };
+
     try {
       await updateDoc(fridgeRef, {
-        fridge: [...foods, product],
+        fridge: [...foods, addFood],
         shoppingList: [
           ...shoppingList.filter((food) => food.id !== product.id),
         ],

@@ -59,10 +59,11 @@ const Recipes = () => {
     } else {
       setSearchFor([...searchFor, name]);
     }
-    const searchWords = searchWordsAsParam();
+    /* const searchWords = searchWordsAsParam();
     setCurrentPage(1);
     setSearchParams({ ...params, pageNumber: '1', phrase: searchWords });
-    console.log(currentPage, pageNumber);
+    console.log(currentPage, pageNumber); */
+    searchRecipes('search', 1);
   };
 
   const searchMenu = foods.map((food, i) => {
@@ -185,7 +186,11 @@ const Recipes = () => {
 
   useEffect(() => {
     const search = async () => {
-      await searchRecipes('search', 1);
+      console.log(phrase, searchFor.join(' '));
+      await searchRecipes(
+        'search',
+        phrase === searchFor.join(' ') ? Number(pageNumber) : 1
+      );
     };
     search();
   }, [searchFor, pageNumber]);
