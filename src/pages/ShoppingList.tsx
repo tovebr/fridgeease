@@ -12,6 +12,7 @@ const ShoppingList = () => {
     <div className='container shoppinglist'>
       <img className='logo' src={logo} alt='logo' />
       <h1 className='page-heading'>Inköpslista</h1>
+      <span className='green-line'></span>
       {shoppingList.length > 0 ? (
         <ItemsList
           foods={shoppingList}

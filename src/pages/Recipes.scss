@@ -27,7 +27,7 @@
     justify-content: space-evenly;
     width: 700px;
     margin: 4rem auto 2rem auto;
-    border-radius: 10px;
+    border-radius: 10px 10px 0 0;
     height: 4rem;
     .option {
       cursor: pointer;
@@ -62,14 +62,46 @@
   }
 }
 
-@media screen and (max-width: 450px) {
-  .logo {
-    display: none;
-  }
+@media screen and (min-height: 450px) and (max-height: 700px) {
+}
+@media screen and (min-width: 450px) and (max-width: 700px) {
   .recipes {
+    &-container {
+      width: 470px;
+      margin: auto;
+    }
+    &-options {
+      width: 470px;
+    }
+  }
+}
+@media screen and (min-width: 450px) and (max-width: 500px) {
+  .recipes {
+    &-options {
+      width: 100%;
+      margin-top: 0;
+    }
+    &-pages {
+      margin-bottom: 5rem;
+    }
+  }
+}
+@media screen and (max-width: 450px) {
+  .recipes {
+    .logo {
+      display: none;
+    }
+    width: 100%;
     .search-filter {
       position: absolute;
-      left: 2rem;
+      min-width: 80%;
+      max-width: 100%;
+      flex-wrap: nowrap;
+      justify-content: left;
+      overflow: scroll;
+      li:first-child {
+        margin-left: 2rem;
+      }
     }
     &-options {
       width: 100%;
@@ -86,7 +118,13 @@
       flex-direction: row;
       flex-wrap: nowrap;
       overflow: scroll;
-      margin: 5.5rem auto 0 auto;
+      margin: 5.5rem auto 1.5rem auto;
+      p {
+        width: 80%;
+        text-align: center;
+        margin-top: 5rem;
+        font-size: 0.95rem;
+      }
     }
   }
 }

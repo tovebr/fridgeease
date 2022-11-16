@@ -1,3 +1,4 @@
+@import '../colors';
 .shoppinglist {
   min-height: 77.4vh;
   .message {
@@ -7,7 +8,14 @@
   }
   .food-list {
     ul {
-      margin-top: 2rem;
+      margin-top: 2rem auto;
     }
+  }
+  .green-line {
+    height: 2px;
+    width: 90%;
+    background-color: $accent-green;
+    display: block;
+    margin: 3rem auto;
   }
 }

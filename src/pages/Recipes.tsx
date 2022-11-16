@@ -120,12 +120,10 @@ const Recipes = () => {
 
       setSearchParams({ ...tempParams });
       setCurrentPage(Number(tempParams.pageNumber));
-      console.log(Number(tempParams.pageNumber));
+
       if (prevSearchIndex !== -1) {
         setRecipes([...searches[prevSearchIndex].result]);
         setNumberOfPages(searches[prevSearchIndex].numberOfPages);
-        //setCurrentPage(searches[prevSearchIndex].page);
-        console.log(searches[prevSearchIndex].numberOfPages);
         setIsLoading(false);
       } else {
         try {
@@ -136,7 +134,7 @@ const Recipes = () => {
             params: tempParams,
           });
           setNumberOfPages(result.data.NumberOfPages);
-          console.log(numberOfPages, result.data.NumberOfPages);
+
           setRecipes([...result.data.Recipes]);
           dispatch(
             SET_SEARCH({
@@ -180,23 +178,21 @@ const Recipes = () => {
     if (phrase) {
       setSearchFor([...phrase.split(' ')]);
     } else {
-      setSearchFor([foods[0]?.name, foods[1]?.name, foods[2]?.name]);
+      setSearchFor(foods.map((food) => food.name));
     }
   }, []);
 
   useEffect(() => {
     const search = async () => {
-      console.log(phrase, searchFor.join(' '));
       await searchRecipes(
         'search',
         phrase === searchFor.join(' ') ? Number(pageNumber) : 1
       );
     };
-    search();
+    if (searchFor.length > 0) {
+      search();
+    }
   }, [searchFor, pageNumber]);
-  /*   useEffect(() => {
-    if(recipeMode === 'search') 
-  }, [recipeMode]); */
 
   return (
     <>
@@ -227,18 +223,26 @@ const Recipes = () => {
             recipes.map((recipe) => (
               <RecipeCard key={recipe.id} recipe={recipe} mode={recipeMode} />
             ))}
-          {recipes.length === 0 && foods.length === 0 && (
-            <p>
-              Inga recept att visa. Lägg till matvaror i ditt kylskåp för att
-              kunna söka recept!
-            </p>
+          {recipes.length === 0 &&
+            foods.length === 0 &&
+            recipeMode === 'search' && (
+              <p>
+                Inga recept att visa. Lägg till matvaror i ditt kylskåp för att
+                kunna söka recept!
+              </p>
+            )}
+          {recipes.length === 0 && recipeMode === 'saved' && (
+            <p>Du har inga sparade recept</p>
           )}
-          {recipes.length === 0 && foods.length > 0 && !error && (
-            <p>
-              Inga recept matchade valda ingredienser, ändra sökkriterierna och
-              försök igen!
-            </p>
-          )}
+          {recipes.length === 0 &&
+            foods.length > 0 &&
+            !error &&
+            recipeMode === 'search' && (
+              <p>
+                Inga recept matchade valda ingredienser, ändra sökkriterierna
+                och försök igen!
+              </p>
+            )}
           {error && (
             <div className='error-message'>
               <p>Något gick fel....</p>

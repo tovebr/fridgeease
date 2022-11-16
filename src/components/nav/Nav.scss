@@ -7,7 +7,7 @@
     flex-direction: row;
     li {
       padding: 1.1rem 1.2rem;
-      color: $accent-green;
+
       cursor: pointer;
       svg {
         display: none;
@@ -19,7 +19,16 @@
   }
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (min-width: 450px) and (max-width: 600px) {
+  .main-nav {
+    li {
+      font-size: 0.9rem;
+      height: 100%;
+    }
+  }
+}
+
+@media screen and (max-width: 500px) {
   .main-nav {
     width: 100%;
     ul {
@@ -29,7 +38,10 @@
       li {
         font-size: 0.7rem;
 
+        padding: 0.8rem 1.2rem;
+
         svg {
+          color: $accent-green;
           display: block;
           margin: auto;
           font-size: 1.6rem;
