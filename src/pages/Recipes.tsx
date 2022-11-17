@@ -4,7 +4,7 @@ import { useSearchParams, Link } from 'react-router-dom';
 import { useAppSelector } from '../app/hooks';
 import { useAppDispatch } from '../app/hooks';
 import { RootState } from '../app/store';
-import { uppercasedName } from '../components/Item/Item';
+import useUppercaseFirstLetter from '../customHooks/useUppercasedFirstLetter';
 import './Recipes.scss';
 import { Recipe, Params } from '../types';
 import RecipeCard from '../components/recipeCard/RecipeCard';
@@ -32,6 +32,7 @@ const Recipes = () => {
   const [pageNumber, setPageNumber] = useState(searchParams.get('pageNumber'));
   const [numberOfPages, setNumberOfPages] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const uppercasedName = useUppercaseFirstLetter;
 
   /* searchParams.forEach((value, key) =>
     console.log('key:', key, '///', 'value: ', value)
@@ -178,7 +179,11 @@ const Recipes = () => {
     if (phrase) {
       setSearchFor([...phrase.split(' ')]);
     } else {
-      setSearchFor(foods.map((food) => food.name));
+      let searchTerms: string[] = [];
+      foods.forEach((food, i) => {
+        if (i <= 2) searchTerms.push(food.name);
+      });
+      setSearchFor(searchTerms);
     }
   }, []);
 
@@ -199,7 +204,7 @@ const Recipes = () => {
       {isLoading && <Loader />}
       <div className='container recipes'>
         <img className='logo' src={logo} alt='logo' />
-
+        <h1 className='page-heading'>Recept</h1>
         <div className='recipes-options'>
           <p
             className={`option ${recipeMode === 'search' ? 'active' : ''}`}

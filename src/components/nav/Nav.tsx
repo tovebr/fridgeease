@@ -39,7 +39,7 @@ const Nav = () => {
                 onClick={() => setActiveTab('fridge')}
               >
                 <BiFridge className='fridge-icon' />
-                Mitt Kylskåp
+                <p className='nav-link-text'>Mitt Kylskåp</p>
               </li>
             </NavLink>
             <NavLink className='list-item' to='/recipes'>
@@ -48,7 +48,7 @@ const Nav = () => {
                 onClick={() => setActiveTab('recipes')}
               >
                 <CiForkAndKnife className='cutlery-icon' />
-                Recept
+                <p className='nav-link-text'>Recept</p>
               </li>
             </NavLink>
             <NavLink className='list-item' to='/shoppinglist'>
@@ -59,7 +59,7 @@ const Nav = () => {
                 onClick={() => setActiveTab('shoppinglist')}
               >
                 <BsCart2 className='cart-icon' />
-                Inköpslista
+                <p className='nav-link-text'>Inköpslista</p>
               </li>
             </NavLink>
 
@@ -70,7 +70,7 @@ const Nav = () => {
               onClick={logoutUser}
             >
               <FiUser className='user-icon' />
-              Logga ut
+              <p className='nav-link-text'>Logga ut</p>
             </li>
           </>
         )}

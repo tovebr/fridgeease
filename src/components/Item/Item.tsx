@@ -9,15 +9,12 @@ import { MdOutlineModeEdit } from 'react-icons/md';
 import { BsCheckLg } from 'react-icons/bs';
 import { IoMdClose } from 'react-icons/io';
 import './Item.scss';
+import useUppercasedFirstLetter from '../../customHooks/useUppercasedFirstLetter';
 
 interface Props {
   product: UsersFoodItem;
   productSource: any;
 }
-
-export const uppercasedName = (word: string) => {
-  return word.slice(0, 1).toUpperCase() + word.slice(1);
-};
 
 const Item = ({ product, productSource }: Props) => {
   const [showModal, setShowModal] = useState(false);
@@ -81,7 +78,9 @@ const Item = ({ product, productSource }: Props) => {
         />
       )}
       <li className='product' id={product.id}>
-        <p className='product-heading'>{uppercasedName(product.name)}</p>{' '}
+        <p className='product-heading'>
+          {useUppercasedFirstLetter(product.name)}
+        </p>{' '}
         {product.daysLeft !== undefined && product.daysLeft < 7 && (
           <span
             className={`expiration ${

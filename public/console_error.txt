@@ -1,0 +1,6 @@
+Warning: React does not recognize the `dataName` prop on a DOM element.
+- This warning comes from an imported icon from react-icons that i can not fix
+
+Warning: Each child in a list should have a unique "key" prop.
+Check the render method of `Recipes`.
+- I cant find the root of this warning, the list-children rendered in this component all have the key-prop.

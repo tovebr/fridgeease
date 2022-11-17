@@ -5,6 +5,9 @@
   ul {
     display: flex;
     flex-direction: row;
+    .nav-link-text {
+      margin: 0;
+    }
     li {
       padding: 1.1rem 1.2rem;
 
@@ -51,6 +54,17 @@
         }
         .cart-icon {
           stroke-width: 0.3;
+        }
+      }
+    }
+  }
+}
+@media screen and (max-width: 300px) {
+  .main-nav {
+    ul {
+      li {
+        .nav-link-text {
+          display: none;
         }
       }
     }

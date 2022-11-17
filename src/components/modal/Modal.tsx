@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { doc, updateDoc } from 'firebase/firestore';
-import { MdOutlineModeEdit } from 'react-icons/md';
 import { IoMdClose } from 'react-icons/io';
 import { db } from '../../firebase/config';
 import { UsersFoodItem, FoodItem } from '../../types';
 import './Modal.scss';
-import { uppercasedName } from '../Item/Item';
+import useUppercaseFirstLetter from '../../customHooks/useUppercasedFirstLetter';
 import { useAppSelector } from '../../app/hooks';
 import { RootState } from '../../app/store';
-import { useNavigate } from 'react-router-dom';
 
 interface Props {
   closeModal: React.MouseEventHandler | any;
@@ -18,11 +16,9 @@ interface Props {
 }
 
 const EditForm = ({ closeModal, product, productSource }: Props) => {
-  const navigate = useNavigate();
   const { fridgeId, foods, shoppingList } = useAppSelector(
     (state: RootState) => state.fridge
   );
-  const { userId } = useAppSelector((state: RootState) => state.auth);
   const [updatedProduct, setUpdatedProduct] = useState<{
     name: string;
     expirationDate: Date | undefined;
@@ -36,6 +32,7 @@ const EditForm = ({ closeModal, product, productSource }: Props) => {
     amount: product.amount,
     category: product.category,
   });
+  const uppercasedName = useUppercaseFirstLetter;
 
   const categoryOptions = [
     'mejeri',
@@ -128,7 +125,6 @@ const EditForm = ({ closeModal, product, productSource }: Props) => {
       console.log(error.message);
     }
     closeModal();
-    /* navigate(-1); */
   };
 
   return (

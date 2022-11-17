@@ -62,8 +62,6 @@
   }
 }
 
-@media screen and (min-height: 450px) and (max-height: 700px) {
-}
 @media screen and (min-width: 450px) and (max-width: 700px) {
   .recipes {
     &-container {
@@ -88,6 +86,9 @@
 }
 @media screen and (max-width: 450px) {
   .recipes {
+    .page-heading {
+      display: none;
+    }
     .logo {
       display: none;
     }
@@ -125,6 +126,27 @@
         margin-top: 5rem;
         font-size: 0.95rem;
       }
+    }
+  }
+}
+
+@media screen and (min-height: 750px) and (max-height: 8400px) and (max-width: 450px) {
+  .recipes {
+    .logo {
+      display: block;
+    }
+    &-options {
+      margin-top: 2rem;
+    }
+    .page-heading {
+      display: none;
+    }
+  }
+}
+@media screen and (min-height: 850px) and (max-width: 450px) {
+  .recipes {
+    .page-heading {
+      display: block;
     }
   }
 }

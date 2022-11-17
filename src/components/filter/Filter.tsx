@@ -1,5 +1,5 @@
 import './Filter.scss';
-import { uppercasedName } from '../Item/Item';
+import useUppercasedFirstLetter from '../../customHooks/useUppercasedFirstLetter';
 
 interface Props {
   activeFilter: string;
@@ -8,6 +8,7 @@ interface Props {
 }
 
 const Filter = ({ activeFilter, handleNewFilter }: Props) => {
+  const uppercasedName = useUppercasedFirstLetter;
   const categoryOptions = [
     'allt',
     'mejeri',
