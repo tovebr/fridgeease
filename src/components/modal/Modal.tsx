@@ -63,6 +63,8 @@ const EditForm = ({ closeModal, product, productSource }: Props) => {
 
     let tempFoods: UsersFoodItem[] | FoodItem[] = [];
 
+    // different ways of updating item if their in the shoppinglist or in fridge
+    // due to being of different types
     if (productSource === 'shoppingList') {
       tempFoods = foodArray.map((food: any) => {
         return {

@@ -4,7 +4,6 @@ import useUppercasedFirstLetter from '../../customHooks/useUppercasedFirstLetter
 interface Props {
   activeFilter: string;
   handleNewFilter: Function;
-  /* React.SetStateAction<string> | React.Dispatch<React.SetStateAction<string>> */
 }
 
 const Filter = ({ activeFilter, handleNewFilter }: Props) => {

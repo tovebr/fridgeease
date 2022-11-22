@@ -3,7 +3,7 @@ import { AiOutlineClockCircle } from 'react-icons/ai';
 import { FiUsers } from 'react-icons/fi';
 import './RecipeCard.scss';
 
-const RecipeCard = ({ recipe, searchesIndex, mode }: any) => {
+const RecipeCard = ({ recipe }: any) => {
   const formatHeading = (text: string) => {
     return text.length > 40 ? text.substring(0, 40) + '...' : text;
   };

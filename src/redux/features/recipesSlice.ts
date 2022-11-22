@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, current } from '@reduxjs/toolkit';
 
 interface InitialState {
   searches: any[];
@@ -17,12 +17,19 @@ const recipesSlice = createSlice({
     SET_SEARCH(state, action) {
       state.searches = [...state.searches, action.payload];
     },
+    UPDATE_SEARCH(state, action) {
+      state.searches[action.payload.index] = {
+        ...state.searches[action.payload.index],
+        result: action.payload.result,
+      };
+    },
     SET_CURRENT_SEARCH_INDEX(state, action) {
       state.currentSearchIndex = action.payload;
     },
   },
 });
 
-export const { SET_SEARCH, SET_CURRENT_SEARCH_INDEX } = recipesSlice.actions;
+export const { SET_SEARCH, UPDATE_SEARCH, SET_CURRENT_SEARCH_INDEX } =
+  recipesSlice.actions;
 
 export default recipesSlice.reducer;

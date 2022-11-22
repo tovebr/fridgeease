@@ -6,7 +6,6 @@
 .search {
   position: relative;
   width: 300px;
-  //height: 100px;
   margin: auto;
 
   input {
@@ -31,12 +30,8 @@
     animation: 0.3s slide-down forwards;
     li {
       padding: 0.8rem 0.8rem 0.8rem 1rem;
-
       font-size: 0.9rem;
       border-bottom: dotted 2px rgb(121, 120, 120);
-      /* &:first-child {
-        border-radius: 20px 20px 0 0;
-      }*/
       &:last-child {
         border-bottom: none;
       }

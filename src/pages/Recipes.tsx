@@ -6,7 +6,7 @@ import { useAppDispatch } from '../app/hooks';
 import { RootState } from '../app/store';
 import useUppercaseFirstLetter from '../customHooks/useUppercasedFirstLetter';
 import './Recipes.scss';
-import { Recipe, Params } from '../types';
+import { Params } from '../types';
 import RecipeCard from '../components/recipeCard/RecipeCard';
 import Loader from '../components/loader/Loader';
 import {
@@ -60,10 +60,6 @@ const Recipes = () => {
     } else {
       setSearchFor([...searchFor, name]);
     }
-    /* const searchWords = searchWordsAsParam();
-    setCurrentPage(1);
-    setSearchParams({ ...params, pageNumber: '1', phrase: searchWords });
-    console.log(currentPage, pageNumber); */
     searchRecipes('search', 1);
   };
 
@@ -82,13 +78,14 @@ const Recipes = () => {
   });
 
   const prevSearch = (page: number): number => {
-    //Check to see if the same search has been done before
+    //Check to see if current ingredients (at current page) has been searched before
     // loops through previous seaches saved in store to see if it has been done before
     let prevSearchIndex = -1;
 
     searches.forEach((item, i) => {
       let prev = true;
-      //loops through current search-words and compares to previous searches
+      //sets prev to to true and prevSearchIndex to current index if there is a record
+      // of a search with the same searchwords and the same pagenr
       searchFor.forEach((word) => {
         prev =
           prev === false

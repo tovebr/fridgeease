@@ -27,7 +27,6 @@ const Search = ({ handleNewFilter }: Props) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const userId = useAppSelector((state: RootState) => state.auth.userId);
   const { fridgeId, foods } = useAppSelector(
     (state: RootState) => state.fridge
   );

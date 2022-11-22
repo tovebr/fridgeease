@@ -100,7 +100,7 @@ const Auth = () => {
     setIsLoading(true);
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredentials) => {
-        const user = userCredentials;
+        //const user = userCredentials;
         setIsLoading(false);
         navigate('/');
       })

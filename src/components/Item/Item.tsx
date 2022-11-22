@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { updateDoc, doc, Timestamp } from 'firebase/firestore';
 import Modal from '../modal/Modal';
 import { db } from '../../firebase/config';
-import { FoodItem, UsersFoodItem } from '../../types';
+import { UsersFoodItem } from '../../types';
 import { useAppSelector } from '../../app/hooks';
 import { RootState } from '../../app/store';
 import { MdOutlineModeEdit } from 'react-icons/md';
@@ -25,7 +25,11 @@ const Item = ({ product, productSource }: Props) => {
 
   const handleAddToFridge = async () => {
     const now = Timestamp.now().toDate();
+
+    // deep copy of now
     const nowCopy = new Date(JSON.parse(JSON.stringify(now)));
+
+    // calculate expirationdate based on todays date and days til expiration
     const expirationDate = new Date(
       nowCopy.setDate(nowCopy.getDate() + (product.expirationDays - 1))
     );
@@ -36,6 +40,7 @@ const Item = ({ product, productSource }: Props) => {
       expirationDate,
     };
 
+    // add it to DB
     try {
       await updateDoc(fridgeRef, {
         fridge: [...foods, addFood],

@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import ItemsList from '../components/ItemsList/ItemsList';
 import './ShoppingList.scss';
 import { useAppSelector } from '../app/hooks';

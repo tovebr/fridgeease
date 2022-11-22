@@ -1,5 +1,3 @@
-import { Timestamp } from 'firebase/firestore';
-
 export interface FoodItem {
   id: string;
   name: string;
@@ -43,26 +41,6 @@ export interface IngredientsObject {
 export interface IngredientGroup {
   portions: number;
   Ingredients: IngredientsObject[];
-}
-
-export interface Recipe {
-  Id: number;
-  ImageId: number;
-  ImageUrl: string;
-  Title: string;
-  PreambleHTML: string;
-  Difficulty: string;
-  CookingTime: string;
-  CookingTimeAbbreviated: string;
-  CookingTimeMinutes: number;
-  CommentCount: number;
-  AverageRating: string;
-  IngredientCount: number;
-  OfferCount: number;
-  IsGoodClimateChoice: boolean;
-  IsKeyHole: boolean;
-  NumberOfUserRatings: string;
-  IngredientGroups: IngredientGroup[];
 }
 
 export interface Params {

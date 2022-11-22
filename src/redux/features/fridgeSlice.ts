@@ -50,11 +50,7 @@ const fridgeSlice = createSlice({
       }
       state.fridgeId = action.payload.fridgeId;
       state.savedRecipes = action.payload.savedRecipes;
-      /* if (action.payload.shoppingList.length > 0) {
-        state.shoppingList = createFoodItems(action.payload.shoppingList);
-      } else { */
       state.shoppingList = action.payload.shoppingList;
-      /* } */
     },
     EMPTY_FRIDGE(state) {
       state.foods = [];

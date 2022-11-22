@@ -1,14 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
-import {
-  collection,
-  query,
-  where,
-  onSnapshot,
-  doc,
-  orderBy,
-} from 'firebase/firestore';
+import { collection, query, where, onSnapshot } from 'firebase/firestore';
 import { auth, db } from '../firebase/config';
 import {
   SET_ACTIVE_USER,
@@ -24,7 +17,7 @@ import Footer from './footer/Footer';
 import Auth from '../pages/Auth';
 import Recipe from '../pages/Recipe';
 import { RootState } from '../app/store';
-import { FoodItem, UsersFoodItem } from '../types';
+import { UsersFoodItem } from '../types';
 import Unauthorized from '../pages/Unauthorized';
 
 function App() {
