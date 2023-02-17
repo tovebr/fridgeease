@@ -10,7 +10,6 @@ Every now and then the food in your fridge will go bad. Often due to forgetting 
 - SCSS
 - Firebase
 
-https://www.figma.com/file/AbLCxDbpyGiRKJAgr9ho2i/FridgeEase?node-id=0%3A1&t=OFD9nme7j79GojOC-0
+Protoytp and design: https://www.figma.com/file/AbLCxDbpyGiRKJAgr9ho2i/FridgeEase?node-id=0%3A1&t=OFD9nme7j79GojOC-0
 
-https://user-images.githubusercontent.com/70133569/219573703-784bbe86-d0df-4a18-a252-83b38ddbab62.mp4
-
+https://user-images.githubusercontent.com/70133569/219574115-c5ae633f-c472-4c49-b59d-4a7f7abeec4d.mp4
