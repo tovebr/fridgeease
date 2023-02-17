@@ -148,6 +148,7 @@ const Recipes = () => {
           setError(error.message);
           setIsLoading(false);
           setCurrentPage(1);
+          setRecipes([]);
         }
       }
     } else {
