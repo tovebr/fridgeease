@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { FoodItem, UsersFridge, UsersFoodItem } from '../../types';
-import { Timestamp } from 'firebase/firestore';
+import { UsersFridge, UsersFoodItem } from '../../types';
 
 const initialState: UsersFridge = {
   fridgeId: '',

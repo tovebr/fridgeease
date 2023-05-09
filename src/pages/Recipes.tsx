@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams, Link } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 import { useAppSelector } from '../app/hooks';
 import { useAppDispatch } from '../app/hooks';
@@ -34,10 +34,6 @@ const Recipes = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const uppercasedName = useUppercaseFirstLetter;
 
-  /* searchParams.forEach((value, key) =>
-    console.log('key:', key, '///', 'value: ', value)
-  );
- */
   const [recipesPerPage, setRecipesPerPage] = useState(9);
   const [recipes, setRecipes] = useState<any[]>([]);
   const { foods, savedRecipes } = useAppSelector(
@@ -78,25 +74,13 @@ const Recipes = () => {
   });
 
   const prevSearch = (page: number): number => {
-    //Check to see if current ingredients (at current page) has been searched before
-    // loops through previous seaches saved in store to see if it has been done before
     let prevSearchIndex = -1;
 
     searches.forEach((item, i) => {
-      let prev = true;
-      //sets prev to to true and prevSearchIndex to current index if there is a record
-      // of a search with the same searchwords and the same pagenr
-      searchFor.forEach((word) => {
-        prev =
-          prev === false
-            ? false
-            : item.searchTerms.includes(word) &&
-              searchFor.length ===
-                [...searches[i].searchTerms.split(' ')].length &&
-              item.page === page;
-      });
+      const searchForIngredients = searchFor.join(' ');
 
-      if (prev) return (prevSearchIndex = i);
+      if (item.searchTerms === searchForIngredients && item.page === page)
+        prevSearchIndex = i;
     });
 
     dispatch(SET_CURRENT_SEARCH_INDEX(prevSearchIndex));
@@ -192,6 +176,7 @@ const Recipes = () => {
         phrase === searchFor.join(' ') ? Number(pageNumber) : 1
       );
     };
+
     if (searchFor.length > 0) {
       search();
     }

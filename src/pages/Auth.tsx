@@ -155,7 +155,7 @@ const Auth = () => {
       sendPasswordResetEmail(auth, email)
         .then(() => {
           setMessage(
-            'Vi har skickat ett mail med instruktioner för attåterställa ditt lösenord (kolla i skräpmappen om du inte ser det i inkorgen)'
+            'Vi har skickat ett mail med instruktioner för att återställa ditt lösenord (kolla i skräpmappen om du inte ser det i inkorgen)'
           );
         })
         .catch((err) => {

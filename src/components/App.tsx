@@ -35,7 +35,7 @@ function App() {
         dispatch(REMOVE_ACTIVE_USER());
       }
     });
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     let unsub: Function = () => {};
@@ -66,7 +66,7 @@ function App() {
       dispatch(EMPTY_FRIDGE());
       unsub();
     }
-  }, [userId]);
+  }, [userId, dispatch]);
 
   return (
     <Router>
